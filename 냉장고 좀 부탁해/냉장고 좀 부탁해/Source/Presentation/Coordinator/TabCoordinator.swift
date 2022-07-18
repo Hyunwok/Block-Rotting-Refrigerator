@@ -50,11 +50,19 @@ enum TabBarPage {
     func imageNameForPage() -> String {
         switch self {
         case .refrigerator:
+<<<<<<< tempMain
             return "tray.2"
         case .recipe:
             return "fork.knife"
         case .setting:
             return "gearshape"
+=======
+            return ""
+        case .recipe:
+            return ""
+        case .setting:
+            return ""
+>>>>>>> [add] Complete Coordinator Setting
         }
     }
     
@@ -115,11 +123,18 @@ class TabCoordinator: NSObject, Coordinator {
         let rootVC = page.coordinator().rootViewController
         
         let navController = UINavigationController(rootViewController: rootVC)
+<<<<<<< tempMain
         navController.setNavigationBarHidden(true, animated: false)
 
         let image = UIImage(named: page.imageNameForPage()) == nil ? UIImage(systemName: page.imageNameForPage()) : UIImage(named: page.imageNameForPage())
         navController.tabBarItem = UITabBarItem.init(title: nil,
                                                      image: image,
+=======
+        navController.setNavigationBarHidden(false, animated: false)
+        
+        navController.tabBarItem = UITabBarItem.init(title: page.pageTitleValue(),
+                                                     image: nil,
+>>>>>>> [add] Complete Coordinator Setting
                                                      tag: page.pageOrderNumber())
         
         return navController
