@@ -53,7 +53,6 @@
 		D6D9ACFA288706B500B939BF /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
 		D6D9ACFC288717A300B939BF /* ScreenUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenUtil.swift; sourceTree = "<group>"; };
 		D6D9ACFE2887DDFD00B939BF /* SectionHeaderCRV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCRV.swift; sourceTree = "<group>"; };
-		D6F9CB6428854432001A6C7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +133,6 @@
 			children = (
 				D66B4AD92878B8B800C9C30D /* Assets.xcassets */,
 				D66B4ADB2878B8B800C9C30D /* LaunchScreen.storyboard */,
-				D6F9CB6428854432001A6C7C /* Info.plist */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
