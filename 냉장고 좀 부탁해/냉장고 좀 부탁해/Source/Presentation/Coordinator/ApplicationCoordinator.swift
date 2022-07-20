@@ -23,12 +23,5 @@ class ApplicationCoordinator: Coordinator {
         let coordinator = TabCoordinator(self.nav)
         self.childCoordinator.append(coordinator)
         coordinator.start()
-<<<<<<< tempMain
-<<<<<<< tempMain
-=======
-        print("Asd")
->>>>>>> [add] Complete Coordinator Setting
-=======
->>>>>>> asdasd
     }
 }

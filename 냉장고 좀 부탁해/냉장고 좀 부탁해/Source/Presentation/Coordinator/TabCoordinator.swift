@@ -28,11 +28,11 @@ enum TabBarPage {
     func pageTitleValue() -> String {
         switch self {
         case .refrigerator:
-            return "refrigerator"
+            return "Refrigerator"
         case .recipe:
-            return "recipe"
+            return "Recipe"
         case .setting:
-            return "Go"
+            return "Setting"
         }
     }
     
@@ -50,27 +50,11 @@ enum TabBarPage {
     func imageNameForPage() -> String {
         switch self {
         case .refrigerator:
-<<<<<<< tempMain
-<<<<<<< tempMain
             return "tray.2"
         case .recipe:
             return "fork.knife"
         case .setting:
             return "gearshape"
-=======
-            return ""
-=======
-            return "tray.2"
->>>>>>> asdasd
-        case .recipe:
-            return "fork.knife"
-        case .setting:
-<<<<<<< tempMain
-            return ""
->>>>>>> [add] Complete Coordinator Setting
-=======
-            return "gearshape"
->>>>>>> asdasd
         }
     }
     
@@ -131,24 +115,12 @@ class TabCoordinator: NSObject, Coordinator {
         let rootVC = page.coordinator().rootViewController
         
         let navController = UINavigationController(rootViewController: rootVC)
-<<<<<<< tempMain
-<<<<<<< tempMain
-=======
->>>>>>> asdasd
         navController.setNavigationBarHidden(true, animated: false)
 
         let image = UIImage(named: page.imageNameForPage()) == nil ? UIImage(systemName: page.imageNameForPage()) : UIImage(named: page.imageNameForPage())
-        navController.tabBarItem = UITabBarItem.init(title: nil,
-                                                     image: image,
-<<<<<<< tempMain
-=======
-        navController.setNavigationBarHidden(false, animated: false)
         
         navController.tabBarItem = UITabBarItem.init(title: page.pageTitleValue(),
-                                                     image: nil,
->>>>>>> [add] Complete Coordinator Setting
-=======
->>>>>>> asdasd
+                                                     image: image,
                                                      tag: page.pageOrderNumber())
         
         return navController
