@@ -24,8 +24,11 @@ class ApplicationCoordinator: Coordinator {
         self.childCoordinator.append(coordinator)
         coordinator.start()
 <<<<<<< tempMain
+<<<<<<< tempMain
 =======
         print("Asd")
 >>>>>>> [add] Complete Coordinator Setting
+=======
+>>>>>>> asdasd
     }
 }
