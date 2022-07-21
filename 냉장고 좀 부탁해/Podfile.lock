@@ -10,6 +10,8 @@ PODS:
   - Realm (10.27.0):
     - Realm/Headers (= 10.27.0)
   - Realm/Headers (10.27.0)
+  - RealmSwift (10.27.0):
+    - Realm (= 10.27.0)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -24,7 +26,7 @@ DEPENDENCIES:
   - Charts
   - FSCalendar
   - ReactorKit
-  - Realm
+  - RealmSwift
   - RxCocoa (= 6.5.0)
   - SnapKit
 
@@ -34,6 +36,7 @@ SPEC REPOS:
     - FSCalendar
     - ReactorKit
     - Realm
+    - RealmSwift
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -46,6 +49,7 @@ SPEC CHECKSUMS:
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   ReactorKit: e8b11d6b9c415405f381669b095c154a05b59eca
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
+  RealmSwift: 271de77b09a73c5e46ee3252283878153bd5d288
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
@@ -53,6 +57,6 @@ SPEC CHECKSUMS:
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
   WeakMapTable: 05c694ce8439a7a9ebabb56187287a63c57673d6
 
-PODFILE CHECKSUM: a734c95af47293daf265a53526a3ae70f394bfec
+PODFILE CHECKSUM: bd2f78093cd3d9f1e8559ecb416f9a495824677f
 
 COCOAPODS: 1.11.3
