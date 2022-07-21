@@ -11,6 +11,6 @@ target '냉장고 좀 부탁해' do
    pod 'Charts'
    pod 'FSCalendar'
    pod 'ReactorKit'
-   pod 'Realm'
+   pod 'RealmSwift'
 
 end

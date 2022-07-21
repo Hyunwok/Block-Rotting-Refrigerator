@@ -16,6 +16,7 @@
 		D6848CE02884744D00327410 /* RecipeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6848CDF2884744D00327410 /* RecipeCoordinator.swift */; };
 		D6848CE22884748B00327410 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6848CE12884748B00327410 /* RecipeViewController.swift */; };
 		D6848CE428847A4D00327410 /* RefrigeratorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6848CE328847A4D00327410 /* RefrigeratorCoordinator.swift */; };
+		D6B8D3EA288873D700B9AFB9 /* RealmFoodStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8D3E9288873D700B9AFB9 /* RealmFoodStorage.swift */; };
 		D6D9ACED28857A6500B939BF /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9ACEC28857A6500B939BF /* SettingViewController.swift */; };
 		D6D9ACEF28857ADB00B939BF /* SettingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9ACEE28857ADB00B939BF /* SettingCoordinator.swift */; };
 		D6D9ACF12885BCA100B939BF /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9ACF02885BCA100B939BF /* SearchView.swift */; };
@@ -43,6 +44,7 @@
 		D6848CE12884748B00327410 /* RecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewController.swift; sourceTree = "<group>"; };
 		D6848CE328847A4D00327410 /* RefrigeratorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefrigeratorCoordinator.swift; sourceTree = "<group>"; };
 		D68BC5BD2888274800C77D55 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6B8D3E9288873D700B9AFB9 /* RealmFoodStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmFoodStorage.swift; sourceTree = "<group>"; };
 		D6D9ACEC28857A6500B939BF /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D6D9ACEE28857ADB00B939BF /* SettingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCoordinator.swift; sourceTree = "<group>"; };
 		D6D9ACF02885BCA100B939BF /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -122,7 +124,8 @@
 		D66B4AE52878CB3A00C9C30D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D6D9ACF9288706AA00B939BF /* Entity */,
+				D6B8D3E6288873A900B9AFB9 /* Data */,
+				D6B8D3E52888731200B9AFB9 /* Domain */,
 				D66B4AE72878CB7500C9C30D /* Presentation */,
 				D66B4AE42878CB3100C9C30D /* Application */,
 			);
@@ -166,13 +169,53 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		D6B8D3E4288872FD00B9AFB9 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D6D9ACF7288705A900B939BF /* ItemCVC.swift */,
+				D6D9ACFE2887DDFD00B939BF /* SectionHeaderCRV.swift */,
+				D6D9ACF52886925100B939BF /* TabCVC.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D6B8D3E52888731200B9AFB9 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				D6D9ACF9288706AA00B939BF /* Entity */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		D6B8D3E6288873A900B9AFB9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D6B8D3E7288873B800B9AFB9 /* PersistentStorages */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		D6B8D3E7288873B800B9AFB9 /* PersistentStorages */ = {
+			isa = PBXGroup;
+			children = (
+				D6B8D3E8288873C200B9AFB9 /* RealmFoodStorage */,
+			);
+			name = PersistentStorages;
+			sourceTree = "<group>";
+		};
+		D6B8D3E8288873C200B9AFB9 /* RealmFoodStorage */ = {
+			isa = PBXGroup;
+			children = (
+				D6B8D3E9288873D700B9AFB9 /* RealmFoodStorage.swift */,
+			);
+			name = RealmFoodStorage;
+			sourceTree = "<group>";
+		};
 		D6D9ACF42886922E00B939BF /* Refriger */ = {
 			isa = PBXGroup;
 			children = (
 				D66B4AD42878B8B500C9C30D /* RefrigeratorViewController.swift */,
-				D6D9ACF7288705A900B939BF /* ItemCVC.swift */,
-				D6D9ACFE2887DDFD00B939BF /* SectionHeaderCRV.swift */,
-				D6D9ACF52886925100B939BF /* TabCVC.swift */,
+				D6B8D3E4288872FD00B9AFB9 /* Components */,
 			);
 			path = Refriger;
 			sourceTree = "<group>";
@@ -301,6 +344,7 @@
 			files = (
 				D6D9ACFB288706B500B939BF /* FoodItem.swift in Sources */,
 				D66B4AEC2879A6CC00C9C30D /* ApplicationCoordinator.swift in Sources */,
+				D6B8D3EA288873D700B9AFB9 /* RealmFoodStorage.swift in Sources */,
 				D6D9ACEF28857ADB00B939BF /* SettingCoordinator.swift in Sources */,
 				D6D9ACED28857A6500B939BF /* SettingViewController.swift in Sources */,
 				D66B4AEA2879A6B300C9C30D /* Coordinator.swift in Sources */,
