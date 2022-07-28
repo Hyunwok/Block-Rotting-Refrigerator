@@ -7,24 +7,30 @@
 
 import UIKit
 
+import RealmSwift
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        printRealmURL()
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             self.window = window
-
-            let nav = UINavigationController()
-            nav.setNavigationBarHidden(true, animated: false)
+            
+            let nav: UINavigationController = AppDIContainer.shared.resolve(registrationName: "Base")
             self.window?.rootViewController = nav
-
-            let coordinator = ApplicationCoordinator(nav)
+            
+            let coordinator: Coordinator = AppDIContainer.shared.resolve()
             coordinator.start()
 
             self.window?.makeKeyAndVisible()
         }
+    }
+    
+    func printRealmURL() {
+        print("path =  \(Realm.Configuration.defaultConfiguration.fileURL!)")
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
