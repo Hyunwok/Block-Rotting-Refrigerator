@@ -11,13 +11,16 @@ import ReactorKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxViewController
 
-final class RefrigeratorViewController: UIViewController {
-    private var disposeBag = DisposeBag()
+final class RefrigeratorViewController: UIViewController, View {
+    var disposeBag = DisposeBag()
     private var titleLbl = UILabel()
     private var searchBar = SearchView()
     private var filterBtn = UIButton()
     private var addBtn = UIButton()
+    
+    var foods = Foods()
     
     var tabCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -51,6 +54,15 @@ final class RefrigeratorViewController: UIViewController {
     
     
     // MARK: - Life Cycle
+    init(_ reactor: RefrigeratorReactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setting()
@@ -66,10 +78,9 @@ final class RefrigeratorViewController: UIViewController {
         searchBar.cornerRadius = 15
         searchBar.searchTextField.delegate = self
         filterBtn.setImage(UIImage(named: "filter"), for: .normal)
-        tabCollectionView.backgroundColor = .red
         tabCollectionView.delegate = self
         tabCollectionView.dataSource = self
-        tabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .centeredHorizontally)
+//        tabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .centeredHorizontally)
         itemCollectionView.delegate = self
         itemCollectionView.dataSource = self
         
@@ -101,7 +112,7 @@ final class RefrigeratorViewController: UIViewController {
         
         tabCollectionView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(searchBar.snp.bottom).offset(16)
+            $0.top.equalTo(searchBar.snp.bottom).offset(8)
             $0.height.equalTo(60)
         }
         
@@ -116,14 +127,50 @@ final class RefrigeratorViewController: UIViewController {
             $0.bottom.trailing.equalToSuperview().inset(20)
         }
     }
+    
+    func bind(reactor: RefrigeratorReactor) {
+        self.rx.viewDidLoad
+            .map { Reactor.Action.load }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        //        filterBtn.rx.tap
+        //            .throttle(., scheduler: MainScheduler.instance)
+        //            .map { Reactor.Action.or }
+        //            .bind(to: reactor.action)
+        //            .disposed(by: disposeBag)
+        
+        itemCollectionView.rx.modelSelected(FoodItem.self)
+            .map { Reactor.Action.itemSelect($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchBar.searchTextField.rx.text
+            .distinctUntilChanged()
+            .map { Reactor.Action.search($0 ?? "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        addBtn.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .map { Reactor.Action.addItem }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable().map { $0.foods }
+            .bind {
+                self.foods = $0
+                self.itemCollectionView.reloadData()
+            }.disposed(by: disposeBag)
+    }
 }
 
 extension RefrigeratorViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.isEqual(tabCollectionView) {
-            return 10
+            return 9
         } else {
-            return 10
+            return self.foods[section].items.count
         }
     }
     
@@ -134,7 +181,7 @@ extension RefrigeratorViewController: UICollectionViewDelegate, UICollectionView
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(for: indexPath, with: ItemCVC.self)
-            cell.setting(FoodItem(itemPlace: .coldTem, name: "양파", remainingDay: 2, number: 3, itemImage: nil))
+            cell.setting(foods[indexPath.section].items[indexPath.row])
             return cell
         }
     }
@@ -146,11 +193,15 @@ extension RefrigeratorViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        if collectionView.isEqual(itemCollectionView) {
+            return self.foods.count
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(CGSize(width: (ScreenUtil.width - 8) / 2, height: ScreenUtil.height / 3.5))
+        //        print(CGSize(width: (ScreenUtil.width - 8) / 2, height: ScreenUtil.height / 3.5))
     }
 }
 

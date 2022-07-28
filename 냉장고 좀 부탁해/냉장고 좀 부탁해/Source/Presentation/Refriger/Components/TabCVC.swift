@@ -9,6 +9,47 @@ import UIKit
 
 import SnapKit
 
+enum TabType: Int {
+    case meat = 0
+    case vegetables
+    case cereals // 곡류
+    case fruits
+    case dairyProductAndEggs // 유제품
+    case seafood
+    case artefact // 가공품
+    case condiment // 조미료, 장류
+    case sideDish // 반찬류
+    case none
+}
+
+
+extension TabType: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .meat:
+            return "육류"
+        case .vegetables:
+            return "채소류"
+        case .cereals:
+            return "곡류"
+        case .fruits:
+            return "과일류"
+        case .dairyProductAndEggs:
+            return "유제품 / 난류"
+        case .seafood:
+            return "해산물류"
+        case .artefact:
+            return "가공품"
+        case .condiment:
+            return "조미료 / 장류"
+        case .sideDish:
+            return "반찬류"
+        case .none:
+            return "없음"
+        }
+    }
+}
+
 final class TabCVC: UICollectionViewCell {
     var seperateColor: UIColor {
         get {
@@ -21,7 +62,7 @@ final class TabCVC: UICollectionViewCell {
     
     override var isSelected: Bool {
         willSet {
-            titleLbl.textColor = !newValue ? .lightGray : .black
+            titleLbl.textColor = !newValue ? .tabNotSelected : .label
             seperateView.isHidden = !newValue
         }
     }
@@ -74,4 +115,3 @@ final class TabCVC: UICollectionViewCell {
 
 typealias TextData = String
 
-extension TabCVC: Reusable {}

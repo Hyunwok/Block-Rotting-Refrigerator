@@ -81,8 +81,8 @@ final class ItemCVC: UICollectionViewCell {
     }
     
     func setting(_ item: FoodItem) {
-        self.imageView.image = item.itemImage
-        self.placeImageView.image = UIImage(named: item.itemPlace.rawValue)
+        self.imageView.image = ImageSaver.loadImageFromDocumentDirectory(imageName: item.itemImageName)
+        self.placeImageView.image = UIImage(named: item.itemPlace.description)
         self.numberLbl.text = "X\(item.number)"
         self.numberLbl.isHidden = item.number > 1 ? false : true
         self.nameLbl.text = item.name
