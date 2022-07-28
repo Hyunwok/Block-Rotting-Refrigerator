@@ -7,4 +7,53 @@
 
 import Foundation
 
-//import RealmSwift
+import RealmSwift
+
+final class RealmFoodStorage {
+    var realm: Realm?
+    
+    init() {
+        do {
+            realm = try Realm()
+        } catch {
+            //          logger.error("Realm Initialization Error: \(error)")
+        }
+    }
+    
+    func fetch() -> [FoodSectionDAO] {
+        guard let `realm` = realm else { return [] }
+        let foods = realm.objects(FoodSectionDAO.self)
+        return foods.toArray()
+    }
+    
+    func save(_ foods: [FoodSectionDAO]) -> Bool {
+        guard let `realm` = realm else { return false }
+        do {
+            try! realm.write {
+                for food in foods {
+                    realm.add(food)
+                }
+            }
+            return true
+        } catch {
+            print("ASDASDASD")
+            return false
+        }
+    }
+    
+    func delete(_ food: FoodItemDAO) -> Bool {
+        return true
+    }
+    
+    
+}
+
+extension RealmFoodStorage: FoodsRepository { }
+
+extension Results {
+    func toArray() -> [Element] {
+        return compactMap {
+            $0
+        }
+    }
+}
