@@ -8,11 +8,12 @@
 import UIKit
 
 final class RecipeCoordinator: Coordinator {
-    var rootViewController: UIViewController {
-        return RecipeViewController()
-    }
-    
     var childCoordinator: [Coordinator] = []
+    let nav: UINavigationController
+    
+    init(_ nav: UINavigationController) {
+        self.nav = nav
+    }
     
     func start() {
         print("Asd")

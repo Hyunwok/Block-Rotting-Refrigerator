@@ -8,10 +8,6 @@
 import UIKit
 
 class ApplicationCoordinator: Coordinator {
-    var rootViewController: UIViewController {
-        return nav
-    }
-    
     var childCoordinator: [Coordinator] = []
     let nav: UINavigationController
     
@@ -20,7 +16,7 @@ class ApplicationCoordinator: Coordinator {
     }
     
     func start() {
-        let coordinator = TabCoordinator(self.nav)
+        let coordinator: TabBarCoordinatorProtocol = AppDIContainer.shared.resolve()
         self.childCoordinator.append(coordinator)
         coordinator.start()
     }

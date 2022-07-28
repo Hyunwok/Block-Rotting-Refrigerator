@@ -8,11 +8,12 @@
 import UIKit
 
 final class SettingCoordinator: Coordinator {
-    var rootViewController: UIViewController {
-        return SettingViewController()
-    }
-    
     var childCoordinator: [Coordinator] = []
+    let nav: UINavigationController
+    
+    init(_ nav: UINavigationController) {
+        self.nav = nav
+    }
     
     func start() {
         print("Asdas")

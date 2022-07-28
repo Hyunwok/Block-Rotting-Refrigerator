@@ -58,23 +58,34 @@ enum TabBarPage {
         }
     }
     
-    func coordinator() -> Coordinator {
+    func rootViewControllerForPage() -> UIViewController {
         switch self {
         case .refrigerator:
-            return RefrigeratorCoordinator()
+            return AppDIContainer.shared.resolve() as RefrigeratorViewController
         case .recipe:
-            return RecipeCoordinator()
+            return RecipeViewController()
         case .setting:
-            return SettingCoordinator()
+            return SettingViewController()
+        }
+    }
+    
+    func getCoordinator() -> Coordinator {
+        switch self {
+        case .refrigerator:
+            return AppDIContainer.shared.resolve() as TabBarCoordinatorProtocol
+        case .recipe:
+            return RecipeCoordinator(UINavigationController())
+        case .setting:
+            return SettingCoordinator(UINavigationController())
         }
     }
 }
 
-class TabCoordinator: NSObject, Coordinator {
-    var rootViewController: UIViewController {
-        return nav
-    }
-    
+protocol TabBarCoordinatorProtocol: Coordinator {
+    var tabBarController: UITabBarController { get }
+}
+
+class TabCoordinator: NSObject, TabBarCoordinatorProtocol {
     var tabBarController: UITabBarController = {
         let tab = UITabBarController()
         tab.view.backgroundColor = .systemBackground
@@ -98,7 +109,7 @@ class TabCoordinator: NSObject, Coordinator {
         
         let controllers: [UINavigationController] = pages.map({ getTabController($0) })
         
-        let _ = pages.map { childCoordinator.append($0.coordinator()) }
+        let _ = pages.map { childCoordinator.append($0.getCoordinator()) }
         
         prepareTabBarController(withTabControllers: controllers)
     }
@@ -112,18 +123,17 @@ class TabCoordinator: NSObject, Coordinator {
     }
     
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
-        let rootVC = page.coordinator().rootViewController
-        
-        let navController = UINavigationController(rootViewController: rootVC)
-        navController.setNavigationBarHidden(true, animated: false)
+        let nav: UINavigationController = AppDIContainer.shared.resolve(registrationName: page.pageTitleValue())
+        nav.setNavigationBarHidden(true, animated: false)
+        nav.setViewControllers([page.rootViewControllerForPage()], animated: false)
 
         let image = UIImage(named: page.imageNameForPage()) == nil ? UIImage(systemName: page.imageNameForPage()) : UIImage(named: page.imageNameForPage())
         
-        navController.tabBarItem = UITabBarItem.init(title: page.pageTitleValue(),
+        nav.tabBarItem = UITabBarItem.init(title: page.pageTitleValue(),
                                                      image: image,
                                                      tag: page.pageOrderNumber())
         
-        return navController
+        return nav
     }
 }
 

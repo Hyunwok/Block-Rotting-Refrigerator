@@ -7,16 +7,27 @@
 
 import UIKit
 
-final class RefrigeratorCoordinator: Coordinator {
-    var rootViewController: UIViewController {
-        return RefrigeratorViewController()
-    }
+protocol RefrigeratorCoordinatorProtocol: Coordinator {
+    func addItem()
+    func selectedItem(_ item: FoodItem)
+}
+
+final class RefrigeratorCoordinator: RefrigeratorCoordinatorProtocol {
+    let nav: UINavigationController
     
     var childCoordinator: [Coordinator] = []
     
-    func start() {
-        print("Asd")
+    init(_ nav: UINavigationController) {
+        self.nav = nav
     }
     
+    func start() {}
     
+    func addItem() {
+//        self.nav.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+    }
+    
+    func selectedItem(_ item: FoodItem) {
+        print(":ASD")
+    }
 }

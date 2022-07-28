@@ -8,7 +8,6 @@
 import UIKit
 
 protocol Coordinator: AnyObject {
-    var rootViewController: UIViewController { get }
     var childCoordinator: [Coordinator] { get set }
     
     func start()
