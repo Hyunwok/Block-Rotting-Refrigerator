@@ -12,5 +12,7 @@ target '냉장고 좀 부탁해' do
    pod 'FSCalendar'
    pod 'ReactorKit'
    pod 'RealmSwift'
+   pod 'RxViewController'
+   pod 'Swinject'
 
 end

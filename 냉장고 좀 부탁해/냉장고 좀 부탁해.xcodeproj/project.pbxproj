@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D6601349288EA76900D3EA1A /* AppDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6601348288EA76900D3EA1A /* AppDIContainer.swift */; };
+		D660134B28904F0000D3EA1A /* AppAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660134A28904F0000D3EA1A /* AppAssembly.swift */; };
+		D660134D28904F2500D3EA1A /* TabAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660134C28904F2500D3EA1A /* TabAssembly.swift */; };
+		D660134F2890EEFA00D3EA1A /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660134E2890EEFA00D3EA1A /* UIColor.swift */; };
+		D66013512890F2D300D3EA1A /* SearchingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66013502890F2D300D3EA1A /* SearchingText.swift */; };
+		D66013532892BEE300D3EA1A /* Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66013522892BEE300D3EA1A /* Convertible.swift */; };
+		D66013572892DD8000D3EA1A /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66013562892DD8000D3EA1A /* ImageSaver.swift */; };
+		D66013592892DD8800D3EA1A /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66013582892DD8800D3EA1A /* ImageSaver.swift */; };
+		D660135B28930EF300D3EA1A /* FoodSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660135A28930EF300D3EA1A /* FoodSection.swift */; };
 		D66B4AD52878B8B500C9C30D /* RefrigeratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66B4AD42878B8B500C9C30D /* RefrigeratorViewController.swift */; };
 		D66B4ADA2878B8B800C9C30D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D66B4AD92878B8B800C9C30D /* Assets.xcassets */; };
 		D66B4ADD2878B8B800C9C30D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D66B4ADB2878B8B800C9C30D /* LaunchScreen.storyboard */; };
@@ -17,6 +26,9 @@
 		D6848CE22884748B00327410 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6848CE12884748B00327410 /* RecipeViewController.swift */; };
 		D6848CE428847A4D00327410 /* RefrigeratorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6848CE328847A4D00327410 /* RefrigeratorCoordinator.swift */; };
 		D6B8D3EA288873D700B9AFB9 /* RealmFoodStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8D3E9288873D700B9AFB9 /* RealmFoodStorage.swift */; };
+		D6B8D3F028893CF600B9AFB9 /* RefrigeratorReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8D3EF28893CF600B9AFB9 /* RefrigeratorReactor.swift */; };
+		D6B8D3F328899E8500B9AFB9 /* RealmFoodDAO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8D3F228899E8500B9AFB9 /* RealmFoodDAO+Mapping.swift */; };
+		D6B8D3F82889A35000B9AFB9 /* FoodsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8D3F72889A35000B9AFB9 /* FoodsRepository.swift */; };
 		D6D9ACED28857A6500B939BF /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9ACEC28857A6500B939BF /* SettingViewController.swift */; };
 		D6D9ACEF28857ADB00B939BF /* SettingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9ACEE28857ADB00B939BF /* SettingCoordinator.swift */; };
 		D6D9ACF12885BCA100B939BF /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9ACF02885BCA100B939BF /* SearchView.swift */; };
@@ -31,8 +43,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		304DF0FFE38DE0589BEFE8D8 /* Pods-냉장고 좀 부탁해.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-냉장고 좀 부탁해.release.xcconfig"; path = "Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해.release.xcconfig"; sourceTree = "<group>"; };
-		B4A8551E386C27F3D07EF9C0 /* Pods-냉장고 좀 부탁해.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-냉장고 좀 부탁해.debug.xcconfig"; path = "Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해.debug.xcconfig"; sourceTree = "<group>"; };
+		1CCB15B2645E640F16634BCC /* Pods-냉장고 좀 부탁해.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-냉장고 좀 부탁해.debug.xcconfig"; path = "Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해.debug.xcconfig"; sourceTree = "<group>"; };
+		6905BD6149EED688E5874478 /* Pods-냉장고 좀 부탁해.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-냉장고 좀 부탁해.release.xcconfig"; path = "Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해.release.xcconfig"; sourceTree = "<group>"; };
+		D6601348288EA76900D3EA1A /* AppDIContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDIContainer.swift; sourceTree = "<group>"; };
+		D660134A28904F0000D3EA1A /* AppAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAssembly.swift; sourceTree = "<group>"; };
+		D660134C28904F2500D3EA1A /* TabAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAssembly.swift; sourceTree = "<group>"; };
+		D660134E2890EEFA00D3EA1A /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		D66013502890F2D300D3EA1A /* SearchingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingText.swift; sourceTree = "<group>"; };
+		D66013522892BEE300D3EA1A /* Convertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Convertible.swift; sourceTree = "<group>"; };
+		D66013562892DD8000D3EA1A /* ImageSaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageSaver.swift; path = "냉장고 좀 부탁해/Source/Presentation/Util/ImageSaver.swift"; sourceTree = SOURCE_ROOT; };
+		D66013582892DD8800D3EA1A /* ImageSaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
+		D660135A28930EF300D3EA1A /* FoodSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSection.swift; sourceTree = "<group>"; };
 		D66B4ACD2878B8B500C9C30D /* 냉장고 좀 부탁해.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "냉장고 좀 부탁해.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D66B4AD42878B8B500C9C30D /* RefrigeratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefrigeratorViewController.swift; sourceTree = "<group>"; };
 		D66B4AD92878B8B800C9C30D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -45,6 +66,9 @@
 		D6848CE328847A4D00327410 /* RefrigeratorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefrigeratorCoordinator.swift; sourceTree = "<group>"; };
 		D68BC5BD2888274800C77D55 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6B8D3E9288873D700B9AFB9 /* RealmFoodStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmFoodStorage.swift; sourceTree = "<group>"; };
+		D6B8D3EF28893CF600B9AFB9 /* RefrigeratorReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefrigeratorReactor.swift; sourceTree = "<group>"; };
+		D6B8D3F228899E8500B9AFB9 /* RealmFoodDAO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmFoodDAO+Mapping.swift"; sourceTree = "<group>"; };
+		D6B8D3F72889A35000B9AFB9 /* FoodsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodsRepository.swift; sourceTree = "<group>"; };
 		D6D9ACEC28857A6500B939BF /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D6D9ACEE28857ADB00B939BF /* SettingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCoordinator.swift; sourceTree = "<group>"; };
 		D6D9ACF02885BCA100B939BF /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -72,13 +96,13 @@
 		35E2908EDE19158C622D5BBE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B4A8551E386C27F3D07EF9C0 /* Pods-냉장고 좀 부탁해.debug.xcconfig */,
-				304DF0FFE38DE0589BEFE8D8 /* Pods-냉장고 좀 부탁해.release.xcconfig */,
+				1CCB15B2645E640F16634BCC /* Pods-냉장고 좀 부탁해.debug.xcconfig */,
+				6905BD6149EED688E5874478 /* Pods-냉장고 좀 부탁해.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		64E260FA8F38D3E9B8CF153C /* Frameworks */ = {
+		C45D556CBF0517F433D0B5BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -91,7 +115,7 @@
 				D66B4ACF2878B8B500C9C30D /* 냉장고 좀 부탁해 */,
 				D66B4ACE2878B8B500C9C30D /* Products */,
 				35E2908EDE19158C622D5BBE /* Pods */,
-				64E260FA8F38D3E9B8CF153C /* Frameworks */,
+				C45D556CBF0517F433D0B5BB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -115,6 +139,9 @@
 		D66B4AE42878CB3100C9C30D /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				D6601348288EA76900D3EA1A /* AppDIContainer.swift */,
+				D660134C28904F2500D3EA1A /* TabAssembly.swift */,
+				D660134A28904F0000D3EA1A /* AppAssembly.swift */,
 				D6EC73652888240E00984AB8 /* AppDelegate.swift */,
 				D6EC73642888240B00984AB8 /* SceneDelegate.swift */,
 			);
@@ -147,11 +174,10 @@
 			children = (
 				D66B4AE82879A68F00C9C30D /* Coordinator */,
 				D6D9ACF42886922E00B939BF /* Refriger */,
-				D6D9ACEC28857A6500B939BF /* SettingViewController.swift */,
-				D6848CE12884748B00327410 /* RecipeViewController.swift */,
-				D6D9ACF22885BEA700B939BF /* UIView.swift */,
-				D6D9ACFC288717A300B939BF /* ScreenUtil.swift */,
-				D6D9ACF02885BCA100B939BF /* SearchView.swift */,
+				D6B8D3EB28891B2800B9AFB9 /* Setting */,
+				D6B8D3EC28891B2E00B9AFB9 /* Recipe */,
+				D6B8D3EE28891B4100B9AFB9 /* Extension */,
+				D6B8D3ED28891B3B00B9AFB9 /* Util */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -182,6 +208,7 @@
 		D6B8D3E52888731200B9AFB9 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				D6B8D3F52889A32B00B9AFB9 /* Interfaces */,
 				D6D9ACF9288706AA00B939BF /* Entity */,
 			);
 			path = Domain;
@@ -190,6 +217,7 @@
 		D6B8D3E6288873A900B9AFB9 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D6B8D3F42889A28F00B9AFB9 /* Network */,
 				D6B8D3E7288873B800B9AFB9 /* PersistentStorages */,
 			);
 			name = Data;
@@ -199,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				D6B8D3E8288873C200B9AFB9 /* RealmFoodStorage */,
+				D66013522892BEE300D3EA1A /* Convertible.swift */,
 			);
 			name = PersistentStorages;
 			sourceTree = "<group>";
@@ -207,14 +236,84 @@
 			isa = PBXGroup;
 			children = (
 				D6B8D3E9288873D700B9AFB9 /* RealmFoodStorage.swift */,
+				D6B8D3F128899E6300B9AFB9 /* EntityMapping */,
 			);
 			name = RealmFoodStorage;
+			sourceTree = "<group>";
+		};
+		D6B8D3EB28891B2800B9AFB9 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				D6D9ACEC28857A6500B939BF /* SettingViewController.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		D6B8D3EC28891B2E00B9AFB9 /* Recipe */ = {
+			isa = PBXGroup;
+			children = (
+				D6848CE12884748B00327410 /* RecipeViewController.swift */,
+			);
+			path = Recipe;
+			sourceTree = "<group>";
+		};
+		D6B8D3ED28891B3B00B9AFB9 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				D6D9ACF02885BCA100B939BF /* SearchView.swift */,
+				D6D9ACFC288717A300B939BF /* ScreenUtil.swift */,
+				D66013582892DD8800D3EA1A /* ImageSaver.swift */,
+				D66013502890F2D300D3EA1A /* SearchingText.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		D6B8D3EE28891B4100B9AFB9 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D66013562892DD8000D3EA1A /* ImageSaver.swift */,
+				D6D9ACF22885BEA700B939BF /* UIView.swift */,
+				D660134E2890EEFA00D3EA1A /* UIColor.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		D6B8D3F128899E6300B9AFB9 /* EntityMapping */ = {
+			isa = PBXGroup;
+			children = (
+				D6B8D3F228899E8500B9AFB9 /* RealmFoodDAO+Mapping.swift */,
+			);
+			name = EntityMapping;
+			sourceTree = "<group>";
+		};
+		D6B8D3F42889A28F00B9AFB9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		D6B8D3F52889A32B00B9AFB9 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				D6B8D3F62889A33200B9AFB9 /* Repositories */,
+			);
+			path = Interfaces;
+			sourceTree = "<group>";
+		};
+		D6B8D3F62889A33200B9AFB9 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				D6B8D3F72889A35000B9AFB9 /* FoodsRepository.swift */,
+			);
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		D6D9ACF42886922E00B939BF /* Refriger */ = {
 			isa = PBXGroup;
 			children = (
 				D66B4AD42878B8B500C9C30D /* RefrigeratorViewController.swift */,
+				D6B8D3EF28893CF600B9AFB9 /* RefrigeratorReactor.swift */,
 				D6B8D3E4288872FD00B9AFB9 /* Components */,
 			);
 			path = Refriger;
@@ -224,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				D6D9ACFA288706B500B939BF /* FoodItem.swift */,
+				D660135A28930EF300D3EA1A /* FoodSection.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -235,11 +335,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D66B4AE12878B8B800C9C30D /* Build configuration list for PBXNativeTarget "냉장고 좀 부탁해" */;
 			buildPhases = (
-				A47B26E80545C7489589E999 /* [CP] Check Pods Manifest.lock */,
+				2AEC3E53C43EBA58E0CD9B4A /* [CP] Check Pods Manifest.lock */,
 				D66B4AC92878B8B500C9C30D /* Sources */,
 				D66B4ACA2878B8B500C9C30D /* Frameworks */,
 				D66B4ACB2878B8B500C9C30D /* Resources */,
-				4943E9DA94F1BA0D4C294FA7 /* [CP] Embed Pods Frameworks */,
+				A48B70D34AFA0173059D3C20 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -296,24 +396,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4943E9DA94F1BA0D4C294FA7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A47B26E80545C7489589E999 /* [CP] Check Pods Manifest.lock */ = {
+		2AEC3E53C43EBA58E0CD9B4A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -335,6 +418,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A48B70D34AFA0173059D3C20 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -342,23 +442,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D660134D28904F2500D3EA1A /* TabAssembly.swift in Sources */,
 				D6D9ACFB288706B500B939BF /* FoodItem.swift in Sources */,
 				D66B4AEC2879A6CC00C9C30D /* ApplicationCoordinator.swift in Sources */,
 				D6B8D3EA288873D700B9AFB9 /* RealmFoodStorage.swift in Sources */,
 				D6D9ACEF28857ADB00B939BF /* SettingCoordinator.swift in Sources */,
 				D6D9ACED28857A6500B939BF /* SettingViewController.swift in Sources */,
 				D66B4AEA2879A6B300C9C30D /* Coordinator.swift in Sources */,
+				D66013592892DD8800D3EA1A /* ImageSaver.swift in Sources */,
 				D66B4AD52878B8B500C9C30D /* RefrigeratorViewController.swift in Sources */,
 				D6D9ACFD288717A300B939BF /* ScreenUtil.swift in Sources */,
+				D660134F2890EEFA00D3EA1A /* UIColor.swift in Sources */,
+				D6B8D3F328899E8500B9AFB9 /* RealmFoodDAO+Mapping.swift in Sources */,
 				D6EC73662888240E00984AB8 /* SceneDelegate.swift in Sources */,
+				D66013572892DD8000D3EA1A /* ImageSaver.swift in Sources */,
 				D6D9ACF8288705A900B939BF /* ItemCVC.swift in Sources */,
+				D6B8D3F82889A35000B9AFB9 /* FoodsRepository.swift in Sources */,
 				D66B4AEE2879A75300C9C30D /* TabCoordinator.swift in Sources */,
 				D6D9ACF12885BCA100B939BF /* SearchView.swift in Sources */,
+				D6B8D3F028893CF600B9AFB9 /* RefrigeratorReactor.swift in Sources */,
+				D66013532892BEE300D3EA1A /* Convertible.swift in Sources */,
+				D66013512890F2D300D3EA1A /* SearchingText.swift in Sources */,
 				D6848CE02884744D00327410 /* RecipeCoordinator.swift in Sources */,
+				D6601349288EA76900D3EA1A /* AppDIContainer.swift in Sources */,
 				D6EC73672888240E00984AB8 /* AppDelegate.swift in Sources */,
 				D6D9ACF32885BEA700B939BF /* UIView.swift in Sources */,
 				D6D9ACF62886925100B939BF /* TabCVC.swift in Sources */,
 				D6848CE428847A4D00327410 /* RefrigeratorCoordinator.swift in Sources */,
+				D660134B28904F0000D3EA1A /* AppAssembly.swift in Sources */,
+				D660135B28930EF300D3EA1A /* FoodSection.swift in Sources */,
 				D6D9ACFF2887DDFD00B939BF /* SectionHeaderCRV.swift in Sources */,
 				D6848CE22884748B00327410 /* RecipeViewController.swift in Sources */,
 			);
@@ -494,7 +606,7 @@
 		};
 		D66B4AE22878B8B800C9C30D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4A8551E386C27F3D07EF9C0 /* Pods-냉장고 좀 부탁해.debug.xcconfig */;
+			baseConfigurationReference = 1CCB15B2645E640F16634BCC /* Pods-냉장고 좀 부탁해.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -523,7 +635,7 @@
 		};
 		D66B4AE32878B8B800C9C30D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 304DF0FFE38DE0589BEFE8D8 /* Pods-냉장고 좀 부탁해.release.xcconfig */;
+			baseConfigurationReference = 6905BD6149EED688E5874478 /* Pods-냉장고 좀 부탁해.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
