@@ -9,10 +9,10 @@ target '냉장고 좀 부탁해' do
    pod 'RxCocoa', '6.5.0'
    pod 'SnapKit'
    pod 'Charts'
-   pod 'FSCalendar'
    pod 'ReactorKit'
    pod 'RealmSwift'
    pod 'RxViewController'
    pod 'Swinject'
+   pod 'RxDataSources'
 
 end
