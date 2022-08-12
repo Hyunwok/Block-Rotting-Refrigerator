@@ -52,9 +52,28 @@ enum TabBarPage {
         case .refrigerator:
             return "tray.2"
         case .recipe:
-            return "fork.knife"
+            if #available(iOS 15.0, *) {
+                return "magazine"
+            } else {
+                return "newspaper"
+            }
         case .setting:
             return "gearshape"
+        }
+    }
+    
+    func imageNameForSelectedPage() -> String {
+        switch self {
+        case .refrigerator:
+            return "tray.2.fill"
+        case .recipe:
+            if #available(iOS 15.0, *) {
+                return "magazine.fill"
+            } else {
+                return "newspaper.fill"
+            }
+        case .setting:
+            return "gearshape.fill"
         }
     }
     
@@ -126,12 +145,13 @@ class TabCoordinator: NSObject, TabBarCoordinatorProtocol {
         let nav: UINavigationController = AppDIContainer.shared.resolve(registrationName: page.pageTitleValue())
         nav.setNavigationBarHidden(true, animated: false)
         nav.setViewControllers([page.rootViewControllerForPage()], animated: false)
-
+        
         let image = UIImage(named: page.imageNameForPage()) == nil ? UIImage(systemName: page.imageNameForPage()) : UIImage(named: page.imageNameForPage())
         
         nav.tabBarItem = UITabBarItem.init(title: page.pageTitleValue(),
-                                                     image: image,
-                                                     tag: page.pageOrderNumber())
+                                           image: image,
+                                           tag: page.pageOrderNumber())
+        nav.tabBarItem.selectedImage = UIImage(systemName: page.imageNameForSelectedPage())!
         
         return nav
     }

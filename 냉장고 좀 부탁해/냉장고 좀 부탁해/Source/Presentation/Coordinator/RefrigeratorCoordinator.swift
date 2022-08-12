@@ -7,9 +7,18 @@
 
 import UIKit
 
+import RxSwift
+
 protocol RefrigeratorCoordinatorProtocol: Coordinator {
     func addItem()
     func selectedItem(_ item: FoodItem)
+    func addAlert(_ alert: UIAlertController)
+    func show<Action: AlertActionType>(
+        title: String?,
+        message: String?,
+        preferredStyle: UIAlertController.Style,
+        actions: [Action]
+    ) -> Observable<Action>
 }
 
 final class RefrigeratorCoordinator: RefrigeratorCoordinatorProtocol {
@@ -24,10 +33,38 @@ final class RefrigeratorCoordinator: RefrigeratorCoordinatorProtocol {
     func start() {}
     
     func addItem() {
-//        self.nav.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+        let coordinator: AddItemCoordinatorProtocol = AppDIContainer.shared.resolve()
+        self.childCoordinator.append(coordinator)
+        coordinator.start()
     }
     
     func selectedItem(_ item: FoodItem) {
         print(":ASD")
+    }
+    
+    func addAlert(_ alert: UIAlertController) {
+        nav.present(alert, animated: true)
+    }
+    
+    func show<Action: AlertActionType>(
+        title: String?,
+        message: String?,
+        preferredStyle: UIAlertController.Style,
+        actions: [Action]
+    ) -> Observable<Action> {
+        return Observable.create { observer in
+            let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+            for action in actions {
+                let alertAction = UIAlertAction(title: action.title, style: action.style) { _ in
+                    observer.onNext(action)
+                    observer.onCompleted()
+                }
+                alert.addAction(alertAction)
+            }
+            self.nav.present(alert, animated: true)
+            return Disposables.create {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 }
