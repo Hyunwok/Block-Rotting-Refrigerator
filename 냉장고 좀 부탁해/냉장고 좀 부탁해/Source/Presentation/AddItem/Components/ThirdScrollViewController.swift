@@ -101,7 +101,6 @@ final class ThirdScrollViewController: UIViewController {
             }
             $0.backgroundColor = .customYellow
             $0.isSelected = true
-            print($0.tag)
             event.onNext(.foodPlace(ItemPlace(rawValue: $0.tag)!))
         }.disposed(by: disposeBag)
     }

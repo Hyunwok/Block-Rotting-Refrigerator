@@ -15,4 +15,16 @@ extension UIColor {
     static var tabNotSelected: UIColor {
         return UIColor(named: "tabNotSelected")!
     }
+    
+    static var addBtnColor: UIColor {
+        return UIColor(named: "addBtnColor")!
+    }
+    
+    static var customGreen: UIColor {
+        return UIColor(named: "customGreen")!
+    }
+    
+    static var customYellow: UIColor {
+        return UIColor(named: "customYellow")!
+    }
 }

@@ -37,6 +37,7 @@ final class SecScrollViewController: UIViewController {
         sliderView.minimumTrackTintColor = .addBtnColor
         notSureBtn.setTitleColor(.label.withAlphaComponent(0.6), for: .normal)
         imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "remainDay")!
         dayLbl.text = "1"
         dayInfoLbl.text = "일 미만"
         dayLbl.font = .systemFont(ofSize: 24, weight: .heavy)
@@ -50,7 +51,6 @@ final class SecScrollViewController: UIViewController {
         nextBtn.backgroundColor = .customYellow
         sliderView.maximumValue = 31
         sliderView.minimumValue = 0
-        imageView.backgroundColor = .red
         
         self.view.addSubviews([infoLbl, imageView, dayLbl, dayInfoLbl, sliderView, notSureBtn, nextBtn])
     }
