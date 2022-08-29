@@ -19,14 +19,14 @@ final class AppDIContainer {
         assembler = Assembler(
             [
                 AppAssembly(),
-                TabAssembly()
+                TabAssembly(),
+                RefrigerAssembly()
             ],
             container: container)
     }
     
     func resolve<T>() -> T {
         guard let resolvedType = container.resolve(T.self) else {
-            print(T.self)
             fatalError()
         }
         return resolvedType
