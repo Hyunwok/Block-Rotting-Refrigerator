@@ -8,6 +8,8 @@
 import UIKit
 
 class ApplicationCoordinator: Coordinator {
+    weak var parentCoordinator: Coordinator?
+    
     var childCoordinator: [Coordinator] = []
     let nav: UINavigationController
     

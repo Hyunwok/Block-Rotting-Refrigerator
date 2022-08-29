@@ -8,6 +8,8 @@
 import UIKit
 
 final class SettingCoordinator: Coordinator {
+    weak var parentCoordinator: Coordinator?
+    
     var childCoordinator: [Coordinator] = []
     let nav: UINavigationController
     
@@ -16,7 +18,7 @@ final class SettingCoordinator: Coordinator {
     }
     
     func start() {
-        print("Asdas")
+        print("SettingCoordinator Start")
     }
     
     

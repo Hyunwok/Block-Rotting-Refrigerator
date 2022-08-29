@@ -24,10 +24,15 @@ protocol AddItemCoordinatorProtocol: Coordinator {
 
 final class AddItemCoordinator: NSObject, AddItemCoordinatorProtocol {
     var childCoordinator: [Coordinator] = []
+    weak var parentCoordinator: Coordinator?
     let nav: UINavigationController
     
     init(_ nav: UINavigationController) {
         self.nav = nav
+    }
+    
+    deinit {
+        print("deinit AddItemCoordinator")
     }
     
     func start() {
@@ -50,7 +55,7 @@ final class AddItemCoordinator: NSObject, AddItemCoordinatorProtocol {
     
     func pop() {
         self.nav.dismiss(animated: true)
-        self.removeChild(self)
+        parentCoordinator?.removeChild(self)
     }
     
     func show<Action: AlertActionType>(

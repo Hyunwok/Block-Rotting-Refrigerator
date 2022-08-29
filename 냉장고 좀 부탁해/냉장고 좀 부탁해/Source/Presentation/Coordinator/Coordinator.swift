@@ -9,6 +9,7 @@ import UIKit
 
 protocol Coordinator: AnyObject {
     var childCoordinator: [Coordinator] { get set }
+    var parentCoordinator: Coordinator? {get set}
     
     func start()
 }

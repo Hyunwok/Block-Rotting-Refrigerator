@@ -82,7 +82,7 @@ enum TabBarPage {
         case .refrigerator:
             return AppDIContainer.shared.resolve() as RefrigeratorViewController
         case .recipe:
-            return RecipeViewController()
+            return AppDIContainer.shared.resolve() as RecipeCategoryViewController
         case .setting:
             return SettingViewController()
         }
@@ -115,6 +115,7 @@ class TabCoordinator: NSObject, TabBarCoordinatorProtocol {
         return tab
     }()
     
+    weak var parentCoordinator: Coordinator?
     var childCoordinator: [Coordinator] = []
     let nav: UINavigationController
     
@@ -143,7 +144,6 @@ class TabCoordinator: NSObject, TabBarCoordinatorProtocol {
     
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
         let nav: UINavigationController = AppDIContainer.shared.resolve(registrationName: page.pageTitleValue())
-        nav.setNavigationBarHidden(true, animated: false)
         nav.setViewControllers([page.rootViewControllerForPage()], animated: false)
         
         let image = UIImage(named: page.imageNameForPage()) == nil ? UIImage(systemName: page.imageNameForPage()) : UIImage(named: page.imageNameForPage())

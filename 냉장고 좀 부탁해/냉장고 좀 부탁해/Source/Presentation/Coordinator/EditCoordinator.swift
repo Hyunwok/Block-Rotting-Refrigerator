@@ -1,18 +1,20 @@
 //
-//  RefrigeratorCoordinator.swift
+//  EditCoordinator.swift
 //  냉장고 좀 부탁해
 //
-//  Created by 이현욱 on 2022/07/18.
+//  Created by 이현욱 on 2022/08/24.
 //
 
 import UIKit
 
 import RxSwift
+import RxCocoa
+import ReactorKit
 
-protocol RefrigeratorCoordinatorProtocol: Coordinator {
-    func addItem()
-    func selectedItem(_ item: FoodSection)
-    func addAlert(_ alert: UIAlertController)
+protocol EditCoordinatorBase: Coordinator {
+    var food: FoodSection! { get set }
+    
+    func pop()
     func show<Action: AlertActionType>(
         title: String?,
         message: String?,
@@ -21,35 +23,22 @@ protocol RefrigeratorCoordinatorProtocol: Coordinator {
     ) -> Observable<Action>
 }
 
-final class RefrigeratorCoordinator: RefrigeratorCoordinatorProtocol {
-    weak var parentCoordinator: Coordinator?
+final class EditCoordinator: NSObject, EditCoordinatorBase {
+    var food: FoodSection!
     
     let nav: UINavigationController
-    
     var childCoordinator: [Coordinator] = []
+    weak var parentCoordinator: Coordinator?
     
-    init(_ nav: UINavigationController) {
+    init(nav: UINavigationController) {
         self.nav = nav
     }
     
-    func start() {}
-    
-    func addItem() {
-        let coordinator: AddItemCoordinatorProtocol = AppDIContainer.shared.resolve()
-        coordinator.parentCoordinator = self
-        self.childCoordinator.append(coordinator)
-        coordinator.start()
-    }
-    
-    func selectedItem(_ item: FoodSection) {
-        let coordinator: EditCoordinatorBase = AppDIContainer.shared.resolve()
-        coordinator.food = item
-        self.childCoordinator.append(coordinator)
-        coordinator.start()
-    }
-    
-    func addAlert(_ alert: UIAlertController) {
-        nav.present(alert, animated: true)
+    func start() {
+        let vc: EditViewController = AppDIContainer.shared.resolve()
+        vc.modalPresentationStyle = .fullScreen
+        vc.food = food
+        nav.present(vc, animated: true)
     }
     
     func show<Action: AlertActionType>(
@@ -67,10 +56,15 @@ final class RefrigeratorCoordinator: RefrigeratorCoordinatorProtocol {
                 }
                 alert.addAction(alertAction)
             }
-            self.nav.present(alert, animated: true)
+            self.nav.presentedViewController?.present(alert, animated: true)
             return Disposables.create {
                 alert.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    
+    func pop() {
+        self.nav.dismiss(animated: true)
+        self.parentCoordinator?.removeChild(self)
     }
 }

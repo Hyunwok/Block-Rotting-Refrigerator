@@ -6,8 +6,13 @@
 //
 
 import UIKit
+ 
+protocol RecipeCoordinatorProtocol: Coordinator {
+    func moveToDetail(_ item: MealType)
+}
 
-final class RecipeCoordinator: Coordinator {
+final class RecipeCoordinator: RecipeCoordinatorProtocol {
+    weak var parentCoordinator: Coordinator?
     var childCoordinator: [Coordinator] = []
     let nav: UINavigationController
     
@@ -16,8 +21,12 @@ final class RecipeCoordinator: Coordinator {
     }
     
     func start() {
-        print("Asd")
+        print("RecipeCoordinator Start")
     }
     
-    
+    func moveToDetail(_ item: MealType) {
+        let vc: RecipeListViewController = AppDIContainer.shared.resolve()
+        vc.category = item.description
+        self.nav.pushViewController(vc, animated: true)
+    }
 }
