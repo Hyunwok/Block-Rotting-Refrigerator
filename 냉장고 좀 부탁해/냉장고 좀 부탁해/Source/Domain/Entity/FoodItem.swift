@@ -6,29 +6,32 @@
 //
 
 import UIKit
+
 import RealmSwift
 
-struct FoodItem: ConvertibleToRealmObject {
-    let name: String
-    let remainingDay: Int
-    let number: Int
-    let itemImageName: String?
-    let itemPlace: ItemPlace
+struct FoodItem {
+    var name: String
+    var remainingDay: Int
+    var number: Int
+    var itemImage: UIImage?
+    var itemPlace: ItemPlace
     
-    init(name: String, remainingDay: Int, number: Int, itemImageName: String?, itemPlace: ItemPlace) {
+    init(name: String, remainingDay: Int, number: Int, itemImage: UIImage?, itemPlace: ItemPlace) {
         self.number = number
         self.name = name
         self.remainingDay = remainingDay
-        self.itemImageName = itemImageName
+        self.itemImage = itemImage
         self.itemPlace = itemPlace
     }
-    
-    func toRealmObject() -> FoodItemDAO {
-        let realmObject = FoodItemDAO()
+}
+
+extension FoodItem: ConvertibleToRealmObject {
+    func toRealmObject() -> FoodItemDTO {
+        let realmObject = FoodItemDTO()
         realmObject.name = name
         realmObject.remainingDay = remainingDay
         realmObject.number = number
-        realmObject.itemImageName = itemImageName
+        realmObject.itemImageName = ImageSaver.saveImageToDocumentDirectory(imageName: UUID().uuidString, image: itemImage)
         realmObject.itemPlace = itemPlace.rawValue
         return realmObject
     }
@@ -36,21 +39,23 @@ struct FoodItem: ConvertibleToRealmObject {
 
 enum ItemPlace: Int {
     case roomTem = 0
-    case frozenTem
     case coldTem
+    case frozenTem
 }
 
-extension ItemPlace: CustomStringConvertible {
+extension ItemPlace {
     var description: String {
         switch self {
-        case .roomTem:
-            return "cloud.sun" // 상온
-        case .frozenTem:
-            return "snowflake" // 냉동
-        case .coldTem:
-            return "wind.snow" // 냉장
+        case .roomTem: // 상온
+            return "cloud.sun.fill"
+        case .frozenTem: // 냉동
+            if #available(iOS 15.0, *) {
+                return "snowflake"
+            } else {
+                return "cloud.snow.fill"
+            }
+        case .coldTem: // 냉장
+            return "wind"
         }
     }
 }
-
-

@@ -7,8 +7,14 @@
 
 import Foundation
 
+import RealmSwift
+import Realm
+
 protocol FoodsRepository {
-    func fetch() -> [FoodSectionDAO]
-    func save(_ foods: [FoodSectionDAO]) -> Bool
-    func delete(_ food: FoodItemDAO) -> Bool
+    func delete(_ item: FoodSectionDTO, _ completion: (Bool) -> Void)
+    @discardableResult
+    func deleteAll() -> Bool
+    func fetch<T: RealmFetchable& ConvertibleToModel>() -> [T]
+    func save<T: RealmSwiftObject>(_ item: T, _ completion: (Bool) -> Void)
+    func update<T: RealmSwiftObject>(_ item: T, _ completion: (Bool) -> Void)
 }
