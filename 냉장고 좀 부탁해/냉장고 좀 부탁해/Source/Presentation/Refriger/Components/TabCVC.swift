@@ -9,21 +9,20 @@ import UIKit
 
 import SnapKit
 
-enum TabType: Int {
-    case meat = 0
-    case vegetables
-    case cereals // 곡류
-    case fruits
-    case dairyProductAndEggs // 유제품
+enum FoodType: Int, CaseIterable {
+    case cereals = 0 // 곡류
+    case meat
     case seafood
+    case fruits
+    case vegetables
+    case dairyProductAndEggs // 유제품
     case artefact // 가공품
     case condiment // 조미료, 장류
     case sideDish // 반찬류
     case none
 }
 
-
-extension TabType: CustomStringConvertible {
+extension FoodType: CustomStringConvertible {
     var description: String {
         switch self {
         case .meat:
@@ -45,12 +44,14 @@ extension TabType: CustomStringConvertible {
         case .sideDish:
             return "반찬류"
         case .none:
-            return "없음"
+            return "검색 결과"
         }
     }
 }
 
 final class TabCVC: UICollectionViewCell {
+    static let cellID = "TabCVC"
+    
     var seperateColor: UIColor {
         get {
             return seperateView.backgroundColor!
@@ -87,23 +88,26 @@ final class TabCVC: UICollectionViewCell {
     
     // MARK: - Layout
     private func setting() {
+        self.clipsToBounds = true
         seperateView.isHidden = true
-        seperateView.backgroundColor = .black
+        seperateView.backgroundColor = .label
+        titleLbl.numberOfLines = 1
         titleLbl.textColor = .lightGray
         titleLbl.textAlignment = .center
-        titleLbl.font = .systemFont(ofSize: 19, weight: .heavy)
+        titleLbl.font = .systemFont(ofSize: 17, weight: .heavy)
         
         self.addSubviews([titleLbl, seperateView])
     }
     
     private func layout() {
         titleLbl.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
+            $0.leading.trailing.top.equalToSuperview().inset(8.5)
+//            $0.height.equalTo(58)
         }
         
         seperateView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.top.equalTo(titleLbl.snp.bottom)
+            $0.top.equalTo(titleLbl.snp.bottom).offset(8.5)
             $0.height.equalTo(2)
         }
     }

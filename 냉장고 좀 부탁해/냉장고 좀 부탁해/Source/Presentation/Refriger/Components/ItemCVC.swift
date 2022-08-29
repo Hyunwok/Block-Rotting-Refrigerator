@@ -10,6 +10,9 @@ import UIKit
 import SnapKit
 
 final class ItemCVC: UICollectionViewCell {
+    static let cellID = "ItemCVC"
+    
+    private var emptyImageView = UIImageView()
     private var imageView = UIImageView()
     private var nameLbl = UILabel()
     private var dateLbl = UILabel()
@@ -37,34 +40,36 @@ final class ItemCVC: UICollectionViewCell {
     }
     
     private func setting() {
-        imageView.contentMode = .scaleAspectFit
+        emptyImageView.image = UIImage(systemName: "xmark.bin.fill")!.withRenderingMode(.alwaysTemplate)
+        emptyImageView.contentMode = .scaleAspectFit
+        emptyImageView.tintColor = .customGreen
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = (self.frame.width - 10) / 10
-        placeImageView.layer.borderWidth = 2
+        placeImageView.contentMode = .scaleAspectFit
+        placeImageView.tintColor = .systemBackground
+        placeImageView.layer.borderWidth = 0.5
         placeImageView.layer.borderColor = UIColor.black.cgColor
         placeImageView.clipsToBounds = true
         placeImageView.layer.cornerRadius = 15
         numberLbl.isHidden = true
         
         self.addSubviews([imageView, placeImageView, numberLbl, nameLbl, dateLbl])
+        self.imageView.addSubview(emptyImageView)
     }
     
     private func layout() {
         imageView.snp.makeConstraints {
             $0.leading.trailing.top.equalToSuperview().inset(5)
-            $0.height.equalTo((ScreenUtil.width - 45) / 2)
+            $0.bottom.equalTo(nameLbl.snp.top).offset(-8)
+//            $0.height.equalTo((ScreenUtil.width - 45) / 2)
         }
         
         nameLbl.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.leading)
-            $0.top.equalTo(imageView.snp.bottom).offset(8)
+            $0.height.equalTo(20.33)
+//            $0.top.equalTo(imageView.snp.bottom).offset(8)
             $0.centerX.equalToSuperview()
-        }
-        
-        numberLbl.snp.makeConstraints {
-            $0.trailing.equalTo(imageView).offset(10)
-            $0.top.equalTo(imageView).offset(5)
-            $0.width.height.equalTo(30)
         }
         
         placeImageView.snp.makeConstraints {
@@ -74,20 +79,43 @@ final class ItemCVC: UICollectionViewCell {
         }
         
         dateLbl.snp.makeConstraints {
+            $0.height.equalTo(20.33)
             $0.leading.trailing.equalTo(nameLbl)
             $0.top.equalTo(nameLbl.snp.bottom).offset(4)
             $0.bottom.equalToSuperview()
         }
+        
+        numberLbl.snp.makeConstraints {
+            $0.trailing.equalTo(imageView).offset(10)
+            $0.top.equalTo(imageView).offset(5)
+            $0.width.height.equalTo(30)
+        }
+        
+        emptyImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.top.leading.equalToSuperview().inset(30)
+        }
     }
     
-    func setting(_ item: FoodItem) {
-        self.imageView.image = ImageSaver.loadImageFromDocumentDirectory(imageName: item.itemImageName)
-        self.placeImageView.image = UIImage(named: item.itemPlace.description)
+    func setting(_ food: FoodItem?) {
+        guard let item = food else { return }
+        self.imageView.image = item.itemImage
+        self.placeImageView.image = UIImage(systemName: item.itemPlace.description)?.withRenderingMode(.alwaysTemplate)
+        self.emptyImageView.isHidden = item.itemImage == nil ? false : true
         self.numberLbl.text = "X\(item.number)"
         self.numberLbl.isHidden = item.number > 1 ? false : true
         self.nameLbl.text = item.name
-        self.dateLbl.text = item.remainingDay < 1 ? "하루 미만" : "\(item.remainingDay)일 남음"
+        
+        var text = ""
+        if item.remainingDay == -1 {
+            text = "알 수 없음"
+        } else if item.remainingDay < 1 {
+            text = "하루 미만"
+        } else if item.remainingDay > 30 {
+            text = "한달 이상"
+        } else {
+            text = "\(item.remainingDay)일 남음"
+        }
+        self.dateLbl.text = text
     }
 }
-
-extension ItemCVC: Reusable {} 
