@@ -117,8 +117,4 @@ final class FirstScrollViewController: UIViewController {
                 event.onNext(.foodName(self.nameTextField.searchTextField.text ?? ""))
             }.disposed(by: disposeBag)
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
 }

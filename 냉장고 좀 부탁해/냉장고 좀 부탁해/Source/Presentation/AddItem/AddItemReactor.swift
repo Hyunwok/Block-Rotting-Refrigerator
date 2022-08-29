@@ -26,8 +26,8 @@ final class AddItemReactor: Reactor {
     
     struct State {
         var isAdding = true
+        var type: FoodType = .cereals
         var food: FoodItem = FoodItem(name: "", remainingDay: 0, number: 0, itemImage: nil, itemPlace: .frozenTem)
-        var type: FoodType = .none
     }
     
     enum Mutation {
@@ -80,13 +80,14 @@ final class AddItemReactor: Reactor {
                 let action: [DismissAlertAction] = [.continue, .cancel]
                 
                 return self.coordinator.show(title: "정말로 나가시겠어요?",
-                                 message: "추가하려던 재료의 정보는 삭제될거에요.",
-                                 preferredStyle: .alert, actions: action)
+                                             message: "추가하려던 재료의 정보는 삭제될거에요.",
+                                             preferredStyle: .alert, actions: action)
                 .flatMap { action -> Observable<Mutation> in
                     switch action {
                     case .continue:
                         return .just(.nothing)
                     case .cancel:
+                        
                         self.coordinator.pop()
                         return .just(.dismiss)
                     }
@@ -122,7 +123,7 @@ final class AddItemReactor: Reactor {
         
         switch mutation {
         case .adding:
-            repo.save(currentState.type, [currentState.food]) { _ in
+            repo.save(FoodSection(type: currentState.type, items: [currentState.food]).toRealmObject()) { _ in
                 newState.isAdding = false
                 self.coordinator.pop()
             }

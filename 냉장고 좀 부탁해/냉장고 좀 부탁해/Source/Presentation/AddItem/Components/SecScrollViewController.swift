@@ -67,7 +67,7 @@ final class SecScrollViewController: UIViewController {
             $0.top.greaterThanOrEqualTo(infoLbl.snp.bottom).offset(30)
             $0.centerY.equalToSuperview().offset(-(ScreenUtil.height / 10))
             $0.centerX.equalToSuperview()
-            $0.leading.equalToSuperview().inset(23)
+            $0.leading.equalToSuperview().inset(ScreenUtil.width / 4.5)
             $0.bottom.greaterThanOrEqualTo(dayLbl.snp.top).offset(30).priority(.high)
             // 슬라이더 랑 라벨 차이가 30 으로 이하로 되려고 한다면 얘는 두고
             // 라벨과 버튼 사이의 간격을 좁히는 그런 계획
