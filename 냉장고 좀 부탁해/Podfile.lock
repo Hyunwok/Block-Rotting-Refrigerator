@@ -1,8 +1,4 @@
 PODS:
-  - Charts (4.0.3):
-    - Charts/Core (= 4.0.3)
-  - Charts/Core (4.0.3):
-    - SwiftAlgorithms (~> 1.0)
   - Differentiator (5.0.0)
   - ReactorKit (3.2.0):
     - RxSwift (~> 6.0)
@@ -26,12 +22,10 @@ PODS:
     - RxCocoa (~> 6.0)
     - RxSwift (~> 6.0)
   - SnapKit (5.6.0)
-  - SwiftAlgorithms (1.0.0)
   - Swinject (2.8.1)
   - WeakMapTable (1.2.0)
 
 DEPENDENCIES:
-  - Charts
   - ReactorKit
   - RealmSwift
   - RxCocoa (= 6.5.0)
@@ -42,7 +36,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Charts
     - Differentiator
     - ReactorKit
     - Realm
@@ -53,12 +46,10 @@ SPEC REPOS:
     - RxSwift
     - RxViewController
     - SnapKit
-    - SwiftAlgorithms
     - Swinject
     - WeakMapTable
 
 SPEC CHECKSUMS:
-  Charts: d959d6723c8eedfdd0735dfc28cb0a71762ac4d9
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   ReactorKit: e8b11d6b9c415405f381669b095c154a05b59eca
   Realm: 9ca328bd7e700cc19703799785e37f77d1a130f2
@@ -69,10 +60,9 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   RxViewController: 56486fa0afd629a1d6b5ba077f3b8cd9dc31b5d2
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
   WeakMapTable: 05c694ce8439a7a9ebabb56187287a63c57673d6
 
-PODFILE CHECKSUM: 9cd436fe31434fe6038c12067b9e28212404ae19
+PODFILE CHECKSUM: 914e89c349ac917a89e512fcd63ae82785dcb37e
 
 COCOAPODS: 1.11.3

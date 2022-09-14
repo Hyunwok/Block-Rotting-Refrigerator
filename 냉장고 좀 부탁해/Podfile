@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '10.0'
 
 target '냉장고 좀 부탁해' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -8,11 +8,14 @@ target '냉장고 좀 부탁해' do
   # Pods for 냉장고 좀 부탁해
    pod 'RxCocoa', '6.5.0'
    pod 'SnapKit'
-   pod 'Charts'
+   # pod 'Charts'
    pod 'ReactorKit'
    pod 'RealmSwift'
    pod 'RxViewController'
    pod 'Swinject'
    pod 'RxDataSources'
-
+	target 'Blocking_Rotting_Test' do
+   inherit! :search_paths
 end
+end
+
