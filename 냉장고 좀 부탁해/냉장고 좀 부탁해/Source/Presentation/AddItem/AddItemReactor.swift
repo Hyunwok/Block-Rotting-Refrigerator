@@ -10,30 +10,44 @@ import Foundation
 import ReactorKit
 import RxSwift
 
-//  추가 후 메인 뷰 변경 확인
-// 2번쨰 탭 이미지 추가ㅣ
+enum FoodEvent {
+    case updateImage(UIImage)
+    case foodName(String)
+    case foodPlace(ItemPlace)
+    case remainDay(Int)
+    case foodCnt(Int)
+    case addType(FoodType)
+}
+
+let event = PublishSubject<FoodEvent>()
 
 final class AddItemReactor: Reactor {
+    private let storage: FoodItemStorage
+    private let alertService: AlertServiceType
+    
     var initialState = State()
-    private var coordinator: AddItemCoordinatorProtocol
-    private let repo: FoodsRepository
+    let subReactors: SubReactors
     
     enum Action {
         case addingImage
         case dismiss
         case add
+        case foodName(String)
+        case remainDay(Int)
     }
     
     struct State {
+        var dismiss = false
+        var cameraSelected = false
+        var albumSelected = false
         var isAdding = true
-        var type: FoodType = .cereals
-        var food: FoodItem = FoodItem(name: "", remainingDay: 0, number: 0, itemImage: nil, itemPlace: .frozenTem)
+        var food: FoodItem = FoodItem(name: "", remainingDay: 0, number: 0, itemImage: nil, itemPlace: .frozenTem, foodType: .cereals)
     }
     
     enum Mutation {
+        case album
         case dismiss
         case adding
-        case nothing
         case cameraing
         case addPlace(ItemPlace)
         case addFoodsCount(Int)
@@ -43,9 +57,16 @@ final class AddItemReactor: Reactor {
         case addType(FoodType)
     }
     
-    init(_ coordinator: AddItemCoordinatorProtocol, _ repo: FoodsRepository) {
-        self.coordinator = coordinator
-        self.repo = repo
+    struct SubReactors {
+        let addNameAndIamgeReactor: AddNameAndImageReactor
+        let remainDayReactor: RemainDayReactor
+    }
+    
+    init( _ storage: FoodItemStorage, alertService: AlertServiceType) {
+        self.storage = storage
+        self.alertService = alertService
+        self.subReactors = SubReactors(addNameAndIamgeReactor: AddNameAndImageReactor(),
+                                       remainDayReactor: RemainDayReactor())
     }
     
     deinit {
@@ -59,42 +80,41 @@ final class AddItemReactor: Reactor {
         case .addingImage:
             let action: [CameraAlertAction] = [.camera, .upload, .cancel]
             
-            return self.coordinator.show(title: "사진을 선택하세요",
+            return alertService.show(title: "사진을 선택하세요",
                                          message: nil,
                                          preferredStyle: .actionSheet,
                                          actions: action)
             .flatMap { action -> Observable<Mutation> in
                 switch action {
                 case .camera:
-                    self.coordinator.camera()
                     return .just(.cameraing)
                 case .upload:
-                    self.coordinator.imagePicker()
-                    return .just(.cameraing)
+                    return .just(.album)
                 case .cancel:
-                    return .just(.cameraing)
+                    return .empty()
                 }
             }
         case .dismiss:
             if currentState.food.name != "" || currentState.food.itemImage != nil {
                 let action: [DismissAlertAction] = [.continue, .cancel]
                 
-                return self.coordinator.show(title: "정말로 나가시겠어요?",
+                return alertService.show(title: "정말로 나가시겠어요?",
                                              message: "추가하려던 재료의 정보는 삭제될거에요.",
                                              preferredStyle: .alert, actions: action)
                 .flatMap { action -> Observable<Mutation> in
                     switch action {
                     case .continue:
-                        return .just(.nothing)
+                        return .empty()
                     case .cancel:
-                        
-                        self.coordinator.pop()
                         return .just(.dismiss)
                     }
                 }
             }
-            self.coordinator.pop()
             return .just(.dismiss)
+        case .foodName(let text):
+            return .just(.addFoodName(text))
+        case .remainDay(let day):
+            return .just(.addRemainDay(day))
         }
     }
     
@@ -123,12 +143,14 @@ final class AddItemReactor: Reactor {
         
         switch mutation {
         case .adding:
-            repo.save(FoodSection(type: currentState.type, items: [currentState.food]).toRealmObject()) { _ in
+            newState.isAdding = true
+            storage.saveItem(currentState.food) { _ in
+                NotiCenter.shared.addNoti(with: self.currentState.food)
                 newState.isAdding = false
-                self.coordinator.pop()
             }
+            newState.dismiss.toggle()
         case .cameraing:
-            break
+            newState.cameraSelected.toggle()
         case .addPlace(let place):
             newState.food.itemPlace = place
         case .addFoodName(let name):
@@ -140,13 +162,12 @@ final class AddItemReactor: Reactor {
         case .addRemainDay(let day):
             newState.food.remainingDay = day
         case .addType(let type):
-            newState.type = type
+            newState.food.foodType = type
         case .dismiss:
-            break
-        case .nothing:
-            print("dismiss")
+            newState.dismiss.toggle()
+        case .album:
+            newState.albumSelected.toggle()
         }
-        
         return newState
     }
 }

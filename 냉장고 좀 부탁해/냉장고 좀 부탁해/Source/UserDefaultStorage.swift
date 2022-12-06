@@ -16,10 +16,22 @@ class UserDefaultStorage {
     
     enum Keys: String {
         case isFirstLanch
+        case remainDay
+        case lastStartDate
     }
     
     var isFirstLaunch: Bool {
-        get { return userDefaults?.bool(forKey: Keys.isFirstLanch.rawValue) ?? false }
+        get { return userDefaults?.bool(forKey: Keys.isFirstLanch.rawValue) ?? true }
         set { userDefaults?.set(newValue, forKey: Keys.isFirstLanch.rawValue) }
+    }
+    
+    var remainDay: Int {
+        get { return userDefaults?.integer(forKey: Keys.remainDay.rawValue) ?? 1 }
+        set { userDefaults?.set(newValue, forKey: Keys.remainDay.rawValue) }
+    }
+    
+    var lastStartDate: Date {
+        get { return (userDefaults?.object(forKey: Keys.lastStartDate.rawValue) as? Date) ?? Date() }
+        set { userDefaults?.set(newValue, forKey: Keys.lastStartDate.rawValue) }
     }
 }

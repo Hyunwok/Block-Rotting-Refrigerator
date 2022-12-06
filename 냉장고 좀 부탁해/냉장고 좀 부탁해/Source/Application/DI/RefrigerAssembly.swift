@@ -26,37 +26,40 @@ class RefrigerAssembly: Assembly {
             let coordinator = AddItemCoordinator(nav)
             coordinator.parentCoordinator = parentCoordinator
             return coordinator
-        }.inObjectScope(.container)
+        }//.inObjectScope(.container)
         
         container.register(AddItemReactor.self) { resolver in
-            guard let coordi = resolver.resolve(AddItemCoordinatorProtocol.self),
-                  let repo = resolver.resolve(FoodsRepository.self, name: "Realm") else { fatalError() }
-            return AddItemReactor(coordi, repo)
-        }
+            guard let repo = resolver.resolve(FoodItemStorage.self, name: "RealmFoodItemStorage"),
+                  let alert = resolver.resolve(AlertServiceType.self) else { fatalError() }
+            return AddItemReactor(repo, alertService: alert)
+        }//.inObjectScope(.graph)
         
         container.register(AddItemViewController.self) { resolver in
-            guard let reactor = resolver.resolve(AddItemReactor.self) else {
+            guard let reactor = resolver.resolve(AddItemReactor.self),
+                  let coordi = resolver.resolve(AddItemCoordinatorProtocol.self) else {
                 fatalError()
             }
             
-            return AddItemViewController(reactor)
-        }
+            return AddItemViewController(reactor, coordi)
+        }.inObjectScope(.graph)
         
         container.register(PHPickerViewController.self, name: "OneImage") { _ in
             var conf = PHPickerConfiguration()
             conf.selectionLimit = 1
             conf.filter = .images
             return PHPickerViewController(configuration: conf)
-        }.inObjectScope(.container)
+        }//.inObjectScope(.container)
         
         container.register(UIImagePickerController.self, name: "camera") { _ in
             let camera = UIImagePickerController()
-            camera.sourceType = .camera
-            camera.allowsEditing = true
-            camera.cameraDevice = .rear
-            camera.cameraCaptureMode = .photo
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                camera.sourceType = .camera
+                camera.allowsEditing = true
+                camera.cameraDevice = .rear
+                camera.cameraCaptureMode = .photo
+            }
             return camera
-        }.inObjectScope(.container)
+        }//.inObjectScope(.container)
     }
     
     private func registerEditItem(_ container: Container) {
@@ -69,9 +72,10 @@ class RefrigerAssembly: Assembly {
         }
         
         container.register(EditReactor.self) { resolver in
-            guard let coordinator = resolver.resolve(EditCoordinatorBase.self),
-                  let repo = resolver.resolve(FoodsRepository.self, name: "Realm") else { fatalError() }
-            return EditReactor(coordinator, repo)
+            guard let alert = resolver.resolve(AlertServiceType.self),
+                  let storage = resolver.resolve(FoodItemStorage.self, name: "RealmFoodItemStorage") else { fatalError() }
+            
+            return EditReactor(storage, alert)
         }
         
         container.register(EditViewController.self) { resolver in

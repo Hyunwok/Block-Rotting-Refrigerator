@@ -12,7 +12,7 @@ import RxCocoa
 import ReactorKit
 
 protocol EditCoordinatorBase: Coordinator {
-    var food: FoodSection! { get set }
+    var food: FoodItem! { get set }
     
     func pop()
     func show<Action: AlertActionType>(
@@ -24,7 +24,7 @@ protocol EditCoordinatorBase: Coordinator {
 }
 
 final class EditCoordinator: NSObject, EditCoordinatorBase {
-    var food: FoodSection!
+    var food: FoodItem!
     
     let nav: UINavigationController
     var childCoordinator: [Coordinator] = []

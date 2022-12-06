@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>98894797184-efobncr4eqla19p9c2rdkho07fkgo7e3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.98894797184-efobncr4eqla19p9c2rdkho07fkgo7e3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBrVblONeLHHgBcPdOQTkGaoQoJ4ZiiyZs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>98894797184</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.decent.vrednic.--------------------</string>
+	<key>PROJECT_ID</key>
+	<string>block-rotting-refrigerator</string>
+	<key>STORAGE_BUCKET</key>
+	<string>block-rotting-refrigerator.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:98894797184:ios:000c09fe599ba4fbeec965</string>
+</dict>
+</plist>

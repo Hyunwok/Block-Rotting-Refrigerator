@@ -33,6 +33,20 @@ final class TabAssembly: Assembly {
             return nav
         }.inObjectScope(.container)
         
+        container.register(FoodItemStorage.self, name: "RealmFoodItemStorage") { _ in
+            return RealmFoodItemStorage()
+        }
+        
+        container.register(RefrigeratorReactor.self) { resolver in
+            guard let storage = resolver.resolve(FoodItemStorage.self, name: "RealmFoodItemStorage"),
+                  let alertService = resolver.resolve(AlertServiceType.self) else {
+                fatalError()
+            }
+            
+            storage.updateAllItems()
+            
+            return RefrigeratorReactor(alertService, storage)
+        }
         
         container.register(RefrigeratorCoordinatorProtocol.self) { resolver in
             guard let nav = resolver.resolve(UINavigationController.self, name: TabBarPage.refrigerator.pageTitleValue()) else {
@@ -42,19 +56,12 @@ final class TabAssembly: Assembly {
             return RefrigeratorCoordinator(nav)
         }
         
-        container.register(RefrigeratorReactor.self) { resolver in
-            guard let coordi = resolver.resolve(RefrigeratorCoordinatorProtocol.self),
-                  let repo = resolver.resolve(FoodsRepository.self, name: "Realm") else {
-                fatalError()
-            }
-            return RefrigeratorReactor(coordi, repo)
-        }
-        
         container.register(RefrigeratorViewController.self) { resolver in
-            guard let reactor = resolver.resolve(RefrigeratorReactor.self) else {
+            guard let coordi = resolver.resolve(RefrigeratorCoordinatorProtocol.self),
+                  let reactor = resolver.resolve(RefrigeratorReactor.self) else {
                 fatalError()
             }
-            return RefrigeratorViewController(reactor)
+            return RefrigeratorViewController(reactor, coordi)
         }
     }
     
@@ -69,15 +76,15 @@ final class TabAssembly: Assembly {
             return RecipeCoordinator(nav)
         }
         
-        container.register(RecipeReactor.self) { resolver in
-            guard let coor: RecipeCoordinatorProtocol = resolver.resolve(RecipeCoordinatorProtocol.self),
-            let dataTransfer = resolver.resolve(DataTransferService.self) else { fatalError() }
-            return RecipeReactor(coor, dataTransfer)
+        container.register(RecipeCategoryReactor.self) { resolver in
+            guard let dataTransfer = resolver.resolve(Provider.self) else { fatalError() }
+            return RecipeCategoryReactor(dataTransfer)
         }
         
         container.register(RecipeCategoryViewController.self) { resolver in
-            guard let reactor: RecipeReactor = resolver.resolve(RecipeReactor.self) else { fatalError() }
-            return RecipeCategoryViewController(reactor)
+            guard let coor: RecipeCoordinatorProtocol = resolver.resolve(RecipeCoordinatorProtocol.self),
+                  let reactor: RecipeCategoryReactor = resolver.resolve(RecipeCategoryReactor.self) else { fatalError() }
+            return RecipeCategoryViewController(reactor, coor)
         }
     }
     

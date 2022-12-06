@@ -11,11 +11,6 @@ import ReactorKit
 import Differentiator
 import RxDataSources
 
-protocol ServiceProviderType: AnyObject {
-    var alertService: AlertServiceType { get }
-    var repo: FoodsRepository { get }
-}
-
 final class RefrigeratorReactor: Reactor {
     enum OrderType {
         case lessDay
@@ -29,15 +24,12 @@ final class RefrigeratorReactor: Reactor {
     enum Action {
         case load
         case orderBy
-        case itemSelect(FoodSection)
         case search(String?)
-        case addItem
     }
     
     enum Mutation {
         case fetch([FoodSection])
         case currentFoods([FoodSection])
-        case move
         case filter([FoodItem])
         case removeFilter([FoodSection])
     }
@@ -46,38 +38,33 @@ final class RefrigeratorReactor: Reactor {
         var isOrdered: Bool = false
         var isHiddenSection: Bool = false
         var currentFoods = [FoodSection]()
-        var fetchedFood = [FoodSection]()
+        var totalCount: Int = 0
     }
     
-    private let repo: FoodsRepository
-    private var filterFoods: [FoodSection] = []
+    private var cnt = 0
+    private let alertService: AlertServiceType
+    private let repo: FoodItemStorage
+    var fetchedFoods: [FoodSection] = []
+    var filterFoods: [FoodSection] = []
     var initialState = State()
-    private let coordinator: RefrigeratorCoordinatorProtocol
     
-    init(_ coordinator: RefrigeratorCoordinatorProtocol, _ repo: FoodsRepository) {
-        self.coordinator = coordinator
-        self.repo = repo
+    init(_ alertService: AlertServiceType, _ task: FoodItemStorage) {
+        self.alertService = alertService
+        self.repo = task
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .itemSelect(let foodItem):
-            self.coordinator.selectedItem(foodItem)
-            return .just(.move)
-            
-        case .addItem:
-            self.coordinator.addItem()
-            return .just(.move)
             
         case .load:
-            let foods: [FoodSectionDTO] = repo.fetch()
-            return .just(.fetch(filtering(foods.map { $0.toModel() })))
+            let foods = repo.fetchItems()
+            return .just(.fetch(makeSections(foods)))
             
         case .search(let string):
             if string != "", let text = string {
                 var items: [FoodItem] = []
                 
-                for section in currentState.fetchedFood {
+                for section in self.fetchedFoods {
                     items += section.items
                 }
                 
@@ -88,15 +75,16 @@ final class RefrigeratorReactor: Reactor {
                         return $0.name.contains(text)
                     }
                 }
+                
                 return .just(.filter(filteredItems))
             } else {
-                return .just(.removeFilter(currentState.fetchedFood))
+                return .just(.removeFilter(self.fetchedFoods))
             }
             
         case .orderBy:
             let alertActions: [FoodSortAlertAction] = [.frozen, .roomTem, .coldTem, .moreDay, .lessDay, .cancel]
             
-            return self.coordinator.show(
+            return alertService.show(
                 title: "필터링 종류",
                 message: nil,
                 preferredStyle: .actionSheet,
@@ -104,12 +92,14 @@ final class RefrigeratorReactor: Reactor {
             )
             .flatMap { alertAction -> Observable<Mutation> in
                 var items: [FoodItem] = []
-                let sec = self.currentState.isOrdered ? self.filterFoods : self.currentState.fetchedFood
-                for section in sec {
-                    items += section.items
+                let sec = self.currentState.isOrdered ? self.filterFoods : self.fetchedFoods
+                sec.forEach {
+                    items += $0.items
                 }
                 
                 switch alertAction {
+                case .roomTem:
+                    return .just(.currentFoods([FoodSection(type: .none, items: items.filter { $0.itemPlace == .roomTem })]))
                 case .coldTem:
                     return .just(.currentFoods([FoodSection(type: .none, items: items.filter { $0.itemPlace == .coldTem })]))
                 case .frozen:
@@ -120,14 +110,12 @@ final class RefrigeratorReactor: Reactor {
                 case .moreDay:
                     return .just(.currentFoods([FoodSection(type: .none,
                                                             items: items.sorted { $0.remainingDay > $1.remainingDay })]))
-                case .roomTem:
-                    return .just(.currentFoods([FoodSection(type: .none, items: items.filter { $0.itemPlace == .roomTem })]))
                 case .cancel:
                     // 만약 검색값이 있다면 filtered 를 보여줘야댐
                     if self.currentState.isOrdered {
                         return .just(.currentFoods(self.filterFoods))
                     } else {
-                        return .just(.currentFoods(self.currentState.fetchedFood))
+                        return .just(.currentFoods(self.fetchedFoods))
                     }
                 }
             }
@@ -141,10 +129,8 @@ final class RefrigeratorReactor: Reactor {
         case .currentFoods(let foods):
             newState.isHiddenSection = foods.first?.type == FoodType.none ? true : false
             newState.currentFoods = foods
-        case .move:
-            print("moved")
         case .fetch(let foods):
-            newState.fetchedFood = foods
+            self.fetchedFoods = foods
             newState.currentFoods = foods
         case .filter(let foods):
             newState.isOrdered = true
@@ -156,22 +142,30 @@ final class RefrigeratorReactor: Reactor {
             newState.isHiddenSection = false
             newState.currentFoods = foods
         }
+        newState.totalCount = cnt
+        
         return newState
     }
     
-    private func filtering(_ sec: [FoodSection]) -> [FoodSection] {
-        var items = sec.sorted()
-        var idx = 0
+    private func makeSections(_ items: [FoodItem]) -> [FoodSection] {
+        var sectionsArr = [FoodSection]()
         
-        while idx < items.count {
-            if items[safe: idx]?.type == items[safe: idx + 1]?.type {
-                items[idx].items += items[idx + 1].items
-                items.remove(at: idx + 1)
-                idx -= 1
+        self.cnt = items.count
+        
+        items.forEach { item in
+            if item.number == 0 {
+                return
             }
-            idx += 1
+            if sectionsArr.contains (where: {$0.type == item.foodType } ) {
+                if let index = sectionsArr.firstIndex(where: {$0.type == item.foodType }) {
+                    sectionsArr[index].items.append(item)
+                }
+            } else {
+                let newSection = FoodSection(type: item.foodType, items: [item])
+                sectionsArr.append(newSection)
+            }
         }
         
-        return items.sorted { $0.type.rawValue < $1.type.rawValue }
+        return sectionsArr.sorted()
     }
 }

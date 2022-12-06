@@ -10,11 +10,13 @@ import Foundation
 import RealmSwift
 import Realm
 
-protocol FoodsRepository {
-    func delete(_ item: FoodSectionDTO, _ completion: (Bool) -> Void)
-    @discardableResult
-    func deleteAll() -> Bool
-    func fetch<T: RealmFetchable& ConvertibleToModel>() -> [T]
-    func save<T: RealmSwiftObject>(_ item: T, _ completion: (Bool) -> Void)
-    func update<T: RealmSwiftObject>(_ item: T, _ completion: (Bool) -> Void)
+protocol FoodItemStorage {
+    func saveItem(_ item: FoodItem, _ completion: (Bool) ->())
+    func fetchItems() -> [FoodItem]
+    
+    func updateItem(_ item: FoodItem, _ completion: (Bool)->())
+    func updateAllItems()
+    
+    func deleteItem(_ item: FoodItem, _ completion: (Bool)->())
+    func deleteAllItems()  
 }

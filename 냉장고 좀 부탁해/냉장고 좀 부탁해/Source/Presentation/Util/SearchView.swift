@@ -10,12 +10,14 @@ import UIKit
 import SnapKit
 
 class SearchView: UIView {
-    var image: UIImage {
+    var image: UIImage? {
         get {
-            return self.imageView.image!
+            return self.imageView.image
         }
         set {
-            self.imageView.image = newValue.withRenderingMode(.alwaysTemplate)
+            imageView.isHidden = newValue == nil
+            updateConstraint(newValue == nil)
+            self.imageView.image = newValue?.withRenderingMode(.alwaysTemplate)
         }
     }
     
@@ -46,10 +48,8 @@ class SearchView: UIView {
         }
     }
     
-    var closeBtn = UIButton()
     var searchTextField = UITextField()
     private var imageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
-    var closeHandler: (() -> Void)!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,7 +64,10 @@ class SearchView: UIView {
     func setting() {
         self.backgroundColor = .lightGray
         self.imageView.tintColor = .black
-        self.addSubviews([imageView, searchTextField, closeBtn])
+        searchTextField.returnKeyType = .search
+        searchTextField.placeholder = placeholder ?? "검색하세요."
+        searchTextField.textColor = .black
+        self.addSubviews([imageView, searchTextField])
     }
     
     func autoLayout() {
@@ -81,11 +84,12 @@ class SearchView: UIView {
         }
     }
     
-    @objc func closeBtnTapped() {
-        UIView.animate(withDuration: 0.5, delay: 0, options: []) {
-            self.closeBtn.alpha = 0
-        } completion: { _ in
-            self.closeHandler()
+    func updateConstraint(_ asd: Bool) {
+        self.searchTextField.snp.remakeConstraints {
+            $0.leading.equalToSuperview().inset(asd ? 13 : 33)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(23)
         }
+        super.updateConstraints()
     }
 }

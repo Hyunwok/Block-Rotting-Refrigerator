@@ -44,15 +44,18 @@ final class ItemCVC: UICollectionViewCell {
         emptyImageView.contentMode = .scaleAspectFit
         emptyImageView.tintColor = .customGreen
         imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .rgb(36, 54, 60, 0.1)
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = (self.frame.width - 10) / 10
-        placeImageView.contentMode = .scaleAspectFit
+        
         placeImageView.tintColor = .systemBackground
-        placeImageView.layer.borderWidth = 0.5
-        placeImageView.layer.borderColor = UIColor.black.cgColor
-        placeImageView.clipsToBounds = true
-        placeImageView.layer.cornerRadius = 15
+//        placeImageView.layer.cornerRadius = 15
+//        placeImageView.backgroundColor = .rgb(36, 54, 60, 0.2)
+        placeImageView.contentMode = .scaleAspectFit
+        
         numberLbl.isHidden = true
+        dateLbl.font = .systemFont(ofSize: 14)
+        dateLbl.textColor = .black.withAlphaComponent(0.7)
         
         self.addSubviews([imageView, placeImageView, numberLbl, nameLbl, dateLbl])
         self.imageView.addSubview(emptyImageView)
@@ -61,14 +64,15 @@ final class ItemCVC: UICollectionViewCell {
     private func layout() {
         imageView.snp.makeConstraints {
             $0.leading.trailing.top.equalToSuperview().inset(5)
-            $0.bottom.equalTo(nameLbl.snp.top).offset(-8)
-//            $0.height.equalTo((ScreenUtil.width - 45) / 2)
+//            $0.bottom.equalTo(nameLbl.snp.top).offset(-8)
+            $0.height.equalTo(imageView.snp.width)
+            //            $0.height.equalTo((ScreenUtil.width - 45) / 2)
         }
         
         nameLbl.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.leading)
             $0.height.equalTo(20.33)
-//            $0.top.equalTo(imageView.snp.bottom).offset(8)
+                        $0.top.equalTo(imageView.snp.bottom).offset(8)
             $0.centerX.equalToSuperview()
         }
         
@@ -107,14 +111,16 @@ final class ItemCVC: UICollectionViewCell {
         self.nameLbl.text = item.name
         
         var text = ""
-        if item.remainingDay == -1 {
+        if item.remainingDay == 10000 {
             text = "알 수 없음"
+        } else if item.remainingDay < 0 {
+            text = "D-\(-1 * item.remainingDay)"
         } else if item.remainingDay < 1 {
-            text = "하루 미만"
+            text = "D-Day"
         } else if item.remainingDay > 30 {
-            text = "한달 이상"
+            text = "D-30"
         } else {
-            text = "\(item.remainingDay)일 남음"
+            text = "D-\(item.remainingDay)"
         }
         self.dateLbl.text = text
     }

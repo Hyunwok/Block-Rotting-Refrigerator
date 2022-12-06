@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ReactorKit
 
 public enum DataTransferError: Error {
     case noResponse
@@ -19,7 +20,7 @@ public protocol DataTransferService {
     
     @discardableResult
     func request<T: Decodable, E: ResponseRequestable>(with endpoint: E,
-                                                       completion: (T?) -> Void) -> NetworkCancellable? where E.Response == T
+                                                       completion: @escaping (T?) -> Void) -> NetworkCancellable? where E.Response == T
     @discardableResult
     func request<E: ResponseRequestable>(with endpoint: E,
                                          completion: @escaping CompletionHandler<Void>) -> NetworkCancellable? where E.Response == Void
@@ -53,10 +54,11 @@ public final class DefaultDataTransferService {
 }
 
 extension DefaultDataTransferService: DataTransferService {
-    public func request<T, E>(with endpoint: E, completion: (T?) -> Void) -> NetworkCancellable? where T : Decodable, T == E.Response, E : ResponseRequestable {
+    public func request<T, E>(with endpoint: E, completion: @escaping (T?) -> Void) -> NetworkCancellable? where T : Decodable, T == E.Response, E : ResponseRequestable {
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let data):
+                URLSession.shared.dataTask(with: <#T##URLRequest#>, completionHandler: <#T##(Data?, URLResponse?, Error?) -> Void#>)
                 let result: Result<T, DataTransferError> = self.decode(data: data, decoder: endpoint.responseDecoder)
                 switch result {
                 case .success(let decodable):
@@ -103,6 +105,10 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
     
+    private func decode<T: Decodable>(data: Data?, decoder: ResponseDecoder) -> T? {
+        guard let data = data else { return nil }
+    }
+    
     private func resolve(networkError error: NetworkError) -> DataTransferError {
         let resolvedError = self.errorResolver.resolve(error: error)
         return resolvedError is NetworkError ? .networkFailure(error) : .resolvedNetworkFailure(resolvedError)
@@ -114,8 +120,8 @@ public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     public init() { }
     
     public func log(error: Error) {
-        printIfDebug("-------------")
-        printIfDebug("\(error)")
+//        printIfDebug("-------------")
+//        printIfDebug("\(error)")
     }
 }
 
@@ -150,4 +156,34 @@ public class RawDataResponseDecoder: ResponseDecoder {
             throw Swift.DecodingError.typeMismatch(T.self, context)
         }
     }
+}
+
+
+protocol URLSessionable {
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
+}
+
+protocol Provider {
+    func request<E: ResponseRequestable, R>(_ endpoint: E, _ completionHandler: (R)->()) where R == E.Response
+}
+
+extension URLSession: URLSessionable { }
+
+class ProviderImpl: Provider {
+    private let session: URLSessionable
+   
+    init(_ session: URLSessionable = URLSession.shared) {
+        self.session = session
+    }
+    
+    func request<E, R>(_ endpoint: E, _ completionHandler: (R?) -> ()) where E : ResponseRequestable, R == E.Response {
+        session.dataTask(with: E.urlRequest()) { [weak self] data, response, error in
+            if let error = error {
+                
+            }
+            
+            
+        }
+    }
+    
 }

@@ -1,0 +1,62 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do 
+  desc "Deploy App"
+
+  lane :deploy do |lane|
+
+#   cocoapods(
+#	clean_install: true,
+# 	use_bundle_exec: false
+#   	#repo_update: true
+#   )
+
+   scan(
+	#workspace: "/Users/ihyun_wook/Documents/GitHub/Block-Rotting-Refrigerator/냉장고 좀 부탁해/냉장고 좀 부탁해.xcworkspace",
+	clean: true,
+	deployment_target_version: "15.5",
+	#build_for_testing: true,
+   	code_coverage: true,
+	fail_build: false
+   )
+	
+   notification(subtitle: "Finished Testing", message: "Check the result")
+
+   build_ios_app(
+	workspace: "/Users/ihyun_wook/Documents/GitHub/Block-Rotting-Refrigerator/냉장고 좀 부탁해/냉장고 좀 부탁해.xcworkspace",
+	silent: true,
+	output_name: "Blocking.ipa",
+	output_directory: "/fastlane"
+   )
+
+   notification(subtitle: "Finished Building", message: "Check the spa")
+
+   firebase_app_distribution(
+	app: "1:98894797184:ios:000c09fe599ba4fbeec965",
+	testers: "hjhsha827@gmail.com",
+	ipa_path: "냉장고 좀 부탁해/fastlane",
+	release_notes_file: "/fastlane/releaseNote.txt",
+	debug: true
+   )
+
+   increment_build_number()
+   
+   
+echo lane
+  end
+end

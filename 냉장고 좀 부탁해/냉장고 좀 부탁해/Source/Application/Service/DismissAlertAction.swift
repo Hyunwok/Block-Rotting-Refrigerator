@@ -25,3 +25,38 @@ enum DismissAlertAction: AlertActionType {
         }
     }
 }
+
+enum OkAlertAction: AlertActionType {
+    case ok
+    
+    var title: String? {
+        switch self {
+        case .ok: return "확인"
+        }
+    }
+    
+    var style: UIAlertAction.Style {
+        switch self {
+        case .ok: return .default
+        }
+    }
+}
+
+enum YesOrNoAlertAction: AlertActionType {
+    case yes
+    case no
+    
+    var title: String? {
+        switch self {
+        case .yes: return "예"
+        case .no: return "아니요"
+        }
+    }
+    
+    var style: UIAlertAction.Style {
+        switch self {
+        case .no: return .default
+        case .yes: return .destructive
+        }
+    }
+}

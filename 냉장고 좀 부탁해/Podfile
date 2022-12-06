@@ -1,21 +1,28 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '10.0'
 
+def pods
+	pod 'RxCocoa'
+	pod 'SnapKit'	
+   # pod 'Charts'
+   pod 'ReactorKit'
+pod 'Realm', :modular_headers => true
+   pod 'RealmSwift', :modular_headers => true
+   pod 'RxViewController'
+   pod 'Swinject'
+   pod 'RxDataSources'
+   pod 'URLNavigator'
+   pod 'FirebaseCore'
+end
+
 target '냉장고 좀 부탁해' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for 냉장고 좀 부탁해
-   pod 'RxCocoa', '6.5.0'
-   pod 'SnapKit'
-   # pod 'Charts'
-   pod 'ReactorKit'
-   pod 'RealmSwift'
-   pod 'RxViewController'
-   pod 'Swinject'
-   pod 'RxDataSources'
-	target 'Blocking_Rotting_Test' do
-   inherit! :search_paths
+   pods
+	
+   target 'Blocking-Rotting-Test' do 
+  	pods
+   end
 end
-end
-

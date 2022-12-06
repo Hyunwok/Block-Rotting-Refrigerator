@@ -10,18 +10,22 @@ import UIKit
 import RealmSwift
 
 struct FoodItem {
+    var foodType: FoodType
+    var id: String
     var name: String
     var remainingDay: Int
     var number: Int
     var itemImage: UIImage?
     var itemPlace: ItemPlace
     
-    init(name: String, remainingDay: Int, number: Int, itemImage: UIImage?, itemPlace: ItemPlace) {
+    init(id: String = UUID().uuidString, name: String, remainingDay: Int, number: Int, itemImage: UIImage?, itemPlace: ItemPlace, foodType: FoodType) {
+        self.id = id
         self.number = number
         self.name = name
         self.remainingDay = remainingDay
         self.itemImage = itemImage
         self.itemPlace = itemPlace
+        self.foodType = foodType
     }
 }
 
@@ -31,16 +35,18 @@ extension FoodItem: ConvertibleToRealmObject {
         realmObject.name = name
         realmObject.remainingDay = remainingDay
         realmObject.number = number
+        realmObject.id = id
         realmObject.itemImageName = ImageSaver.saveImageToDocumentDirectory(imageName: UUID().uuidString, image: itemImage)
         realmObject.itemPlace = itemPlace.rawValue
+        realmObject.foodType = foodType.rawValue
         return realmObject
     }
 }
 
 enum ItemPlace: Int {
     case roomTem = 0
-    case coldTem
-    case frozenTem
+    case coldTem = 1
+    case frozenTem = 2
 }
 
 extension ItemPlace {
@@ -58,4 +64,14 @@ extension ItemPlace {
             return "wind"
         }
     }
+    
+    var place: String {
+        switch self {
+        case .roomTem: return "상온"
+        case .frozenTem: return "냉동"
+        case .coldTem: return "냉장"
+        }
+    }
 }
+
+extension FoodItem: Equatable { }

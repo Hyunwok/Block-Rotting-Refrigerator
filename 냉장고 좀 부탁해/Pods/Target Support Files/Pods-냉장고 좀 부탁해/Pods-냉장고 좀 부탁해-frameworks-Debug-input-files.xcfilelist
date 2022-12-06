@@ -1,5 +1,11 @@
 ${PODS_ROOT}/Target Support Files/Pods-냉장고 좀 부탁해/Pods-냉장고 좀 부탁해-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework
+${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework
+${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework
+${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework
+${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework
+${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework
+${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework
 ${BUILT_PRODUCTS_DIR}/ReactorKit/ReactorKit.framework
 ${BUILT_PRODUCTS_DIR}/Realm/Realm.framework
 ${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework
@@ -10,4 +16,6 @@ ${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework
 ${BUILT_PRODUCTS_DIR}/RxViewController/RxViewController.framework
 ${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
 ${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework
+${BUILT_PRODUCTS_DIR}/URLNavigator/URLNavigator.framework
 ${BUILT_PRODUCTS_DIR}/WeakMapTable/WeakMapTable.framework
+${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework

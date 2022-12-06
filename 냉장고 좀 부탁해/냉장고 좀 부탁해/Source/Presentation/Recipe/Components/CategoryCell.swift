@@ -31,20 +31,27 @@ final class CategoryCell: UICollectionViewCell {
     
     private func setting() {
         imageView.contentMode = .scaleAspectFit
+        self.backgroundColor = .lightGray
+        self.layer.cornerRadius = 12
         
         self.addSubviews([imageView, titleLbl])
     }
     
     private func layout() {
         imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(8)
+//            $0.leading.greaterThanOrEqualToSuperview().inset(20)
             $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(30)
+            $0.trailing.equalTo(titleLbl.snp.leading).offset(-15)
         }
         
         titleLbl.snp.makeConstraints {
-            $0.leading.equalTo(imageView.snp.trailing).offset(8)
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(8)
+            $0.centerX.equalToSuperview().offset(15)
+//            $0.leading.equalTo(imageView.snp.trailing).offset(20)
+//            $0.centerY.equalToSuperview()
+//            $0.trailing.greaterThanOrEqualToSuperview().inset(8)
+//            $0.trailing.equalToSuperview().inset(8)
         }
     }
     

@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import SafariServices
  
 protocol RecipeCoordinatorProtocol: Coordinator {
-    func moveToDetail(_ item: MealType)
+    func moveToList(_ item: MealType)
+    func moveToDetail(_ item: FoodDetailResponseDTO)
+    func youtube(_ url: String?)
 }
 
 final class RecipeCoordinator: RecipeCoordinatorProtocol {
@@ -24,9 +27,23 @@ final class RecipeCoordinator: RecipeCoordinatorProtocol {
         print("RecipeCoordinator Start")
     }
     
-    func moveToDetail(_ item: MealType) {
+    func moveToList(_ item: MealType) {
         let vc: RecipeListViewController = AppDIContainer.shared.resolve()
-        vc.category = item.description
+        vc.category = item.rawValue
         self.nav.pushViewController(vc, animated: true)
+    }
+    
+    func moveToDetail(_ item: FoodDetailResponseDTO) {
+        let vc: RecipeInfoViewController = AppDIContainer.shared.resolve()
+        vc.id = item.idMeal
+        vc.name = item.strMeal
+        self.nav.pushViewController(vc, animated: true)
+    }
+    
+    func youtube(_ url: String?) {
+        if let urlStr = url,
+           let url = URL(string: urlStr) {
+            UIApplication.shared.open(url, options: [:])
+        }
     }
 }

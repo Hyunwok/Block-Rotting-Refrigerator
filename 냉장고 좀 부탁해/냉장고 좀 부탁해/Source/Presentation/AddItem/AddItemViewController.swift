@@ -12,29 +12,42 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-let event = PublishSubject<FoodEvent>()
-
 final class AddItemViewController: UIViewController, View {
-    let first = FirstScrollViewController()
-    let sec = SecScrollViewController()
+    private let coordinator: AddItemCoordinatorProtocol
+    var disposeBag = DisposeBag()
+    
+    private let addNameAndImageView = AddNameAndImageView()
+    private let remainDayView = RemainDayView()
     let third = ThirdScrollViewController()
     let fourth = FourthScrollViewController()
     let fifth = FifthScrollViewController()
-    var disposeBag = DisposeBag()
     
-    let indicatorView = UIActivityIndicatorView(style: .large)
+    let indicatorView = CustomIndicatorView()
     let backBtn = UIButton()
-    let pageControl = UIPageControl()
     let scrollView = UIScrollView()
     let closeBtn = UIButton()
     
-    init(_ reactor: AddItemReactor) {
+    private let pageControl: UIPageControl = {
+        let control = UIPageControl()
+        control.pageIndicatorTintColor = .customGreen.withAlphaComponent(0.7)
+        control.currentPageIndicatorTintColor = .customGreen
+        control.numberOfPages = 4
+        control.currentPage = 0
+        return control
+    }()
+    
+    init(_ reactor: AddItemReactor, _ coordinator: AddItemCoordinatorProtocol) {
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("deinit AddItemViewController")
     }
     
     override func viewDidLoad() {
@@ -48,26 +61,24 @@ final class AddItemViewController: UIViewController, View {
         scrollView.contentSize = CGSize(width: 2700, height: ScreenUtil.height)
         backBtn.setImage(UIImage(systemName: "arrow.backward")!.withRenderingMode(.alwaysTemplate), for: .normal)
         backBtn.tintColor = .label
+        backBtn.isHidden = true
         closeBtn.setImage(UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
         closeBtn.tintColor = .label
-        pageControl.pageIndicatorTintColor = .customGreen.withAlphaComponent(0.7)
-        pageControl.currentPageIndicatorTintColor = .customGreen
-        pageControl.numberOfPages = 4
-        pageControl.currentPage = 0
-        backBtn.isHidden = true
         indicatorView.isHidden = true
-        
-        self.view.addSubviews([scrollView, backBtn, closeBtn, pageControl, indicatorView])
-        scrollView.addSubviews([first.view, sec.view, third.view, fourth.view, fifth.view])
     }
     
     func layout() {
+        self.view.addSubviews([scrollView, backBtn, closeBtn, pageControl, indicatorView])
+        scrollView.addSubviews([addNameAndImageView, remainDayView, third.view, fourth.view, fifth.view])
+        
         backBtn.snp.makeConstraints {
+            $0.width.height.equalTo(50)
             $0.leading.equalToSuperview().inset(23)
-            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
         }
         
         closeBtn.snp.makeConstraints {
+            $0.width.height.equalTo(50)
             $0.trailing.equalToSuperview().inset(23)
             $0.top.equalTo(backBtn.snp.top)
         }
@@ -88,21 +99,21 @@ final class AddItemViewController: UIViewController, View {
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
         }
         
-        first.view.snp.makeConstraints {
+        addNameAndImageView.snp.makeConstraints {
             $0.height.leading.top.bottom.equalToSuperview()
             $0.width.equalTo(ScreenUtil.width)
         }
         
-        sec.view.snp.makeConstraints {
+        remainDayView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.width.equalTo(ScreenUtil.width)
-            $0.leading.equalTo(first.view.snp.trailing)
+            $0.leading.equalTo(addNameAndImageView.snp.trailing)
         }
         
         third.view.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.width.equalTo(ScreenUtil.width)
-            $0.leading.equalTo(sec.view.snp.trailing)
+            $0.leading.equalTo(remainDayView.snp.trailing)
         }
         
         fourth.view.snp.makeConstraints {
@@ -116,75 +127,112 @@ final class AddItemViewController: UIViewController, View {
             $0.width.equalTo(ScreenUtil.width)
             $0.leading.equalTo(fourth.view.snp.trailing)
         }
-        
     }
     
     func bind(reactor: AddItemReactor) {
-        fifth.finishBtn.rx.tap
-            .map {
-                self.indicatorView.isHidden = false
-                self.indicatorView.startAnimating()
-            }
-            .delay(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
-            .map { Reactor.Action.add }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        first.imageBtn.rx.tap
-            .map { Reactor.Action.addingImage }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
         closeBtn.rx.tap
             .map { Reactor.Action.dismiss }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         backBtn.rx.tap
-            .bind {
-                let offsetX = self.scrollView.contentOffset.x
-                self.scrollView.setContentOffset(CGPoint(x: offsetX - ScreenUtil.width, y: 0), animated: true)
+            .bind { [weak self] _ in
+                let offsetX = self?.scrollView.contentOffset.x ?? 0.0
+                self?.scrollView.setContentOffset(CGPoint(x: offsetX - ScreenUtil.width, y: 0), animated: true)
             }.disposed(by: disposeBag)
+        
+        fifth.finishBtn.rx.tap
+            .map { [weak self] _ in
+                self?.indicatorView.startAnimating()
+            }.delay(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .map { Reactor.Action.add }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
         scrollView.rx.contentOffset
-            .bind {
-                self.pageControl.isHidden = !($0.x >= ScreenUtil.width)
-                self.backBtn.isHidden = !($0.x >= ScreenUtil.width)
-                self.backBtn.alpha = $0.x / 100
-                self.pageControl.currentPage = Int($0.x / ScreenUtil.width) - 1
+            .bind { [weak self] offset in
+                self?.pageControl.isHidden = !(offset.x >= ScreenUtil.width)
+                self?.backBtn.isHidden = !(offset.x >= ScreenUtil.width)
+                self?.backBtn.alpha = offset.x / 100
+                self?.pageControl.currentPage = Int(offset.x / ScreenUtil.width) - 1
             }.disposed(by: disposeBag)
         
-        Observable.merge(first.nextBtn.rx.tap.map { _ in ()},
-                         sec.nextBtn.rx.tap.map { _ in ()},
-                         sec.notSureBtn.rx.tap.map { _ in ()},
-                         fourth.nextBtn.rx.tap.map { _ in ()})
-        .throttle(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
-        .bind { _ in
-            let offsetX = self.scrollView.contentOffset.x
-            self.scrollView.setContentOffset(CGPoint(x: offsetX + ScreenUtil.width, y: 0), animated: true)
+        Observable.merge(
+            Observable.merge(addNameAndImageView.nextBtn.rx.tap.map { _ in ()},
+                                     remainDayView.nextBtn.rx.tap.map { _ in ()},
+                                     remainDayView.notSureBtn.rx.tap.map { _ in ()},
+                                     fourth.nextBtn.rx.tap.map { _ in ()}),
+             Observable.merge(third.frozenBtn.rx.tap.map { _ in ()},
+                                     third.coldBtn.rx.tap.map { _ in ()},
+                                     third.roomTepBtn.rx.tap.map { _ in ()})
+        ).bind { [weak self] _ in
+            let offsetX = self?.scrollView.contentOffset.x ?? 0.0
+            self?.scrollView.setContentOffset(CGPoint(x: offsetX + ScreenUtil.width, y: 0), animated: true)
         }.disposed(by: disposeBag)
         
-        Observable.merge(third.frozenBtn.rx.tap.map { _ in ()},
-                         third.coldBtn.rx.tap.map { _ in ()},
-                         third.roomTepBtn.rx.tap.map { _ in ()})
-        .bind { _ in
-            let offsetX = self.scrollView.contentOffset.x
-            self.scrollView.setContentOffset(CGPoint(x: offsetX + ScreenUtil.width, y: 0), animated: true)
-        }.disposed(by: disposeBag)
+        reactor.state.asObservable().map { $0.dismiss }
+            .distinctUntilChanged()
+            .bind { [weak self] _ in
+                self?.coordinator.pop()
+            }.disposed(by: disposeBag)
         
-        reactor.state.asObservable().map { $0.food.itemImage }
-            .filter { $0 != nil }
-            .bind {
-                self.first.imageView.isHidden = true
-                self.first.imageBtn.setImage($0, for: .normal)
+        reactor.state.asObservable().map { $0.cameraSelected }
+            .distinctUntilChanged()
+            .bind { [weak self] _ in
+                self?.coordinator.camera()
+            }.disposed(by: disposeBag)
+        
+        reactor.state.asObservable().map { $0.albumSelected }
+            .distinctUntilChanged()
+            .bind { [weak self] _ in
+                self?.coordinator.imagePicker()
             }.disposed(by: disposeBag)
         
         reactor.state.asObservable().map { $0.isAdding }
             .filter { $0 == false }
-            .bind {
-                self.indicatorView.isHidden = !$0
-                self.indicatorView.stopAnimating()
+            .bind { [weak self] _ in
+                self?.indicatorView.stopAnimating()
+                self?.coordinator.pop()
             }.disposed(by: disposeBag)
+        
+        bindAddNameImageReactor(reactor: reactor)
+        bindRemainDayReactor(reactor: reactor)
     }
 }
 
+extension AddItemViewController {
+    private func bindAddNameImageReactor(reactor: AddItemReactor) {
+        addNameAndImageView.reactor = reactor.subReactors.addNameAndIamgeReactor
+        
+        addNameAndImageView.imageBtn.rx.tap
+            .map { Reactor.Action.addingImage }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        addNameAndImageView.nameTextField.searchTextField.rx.text
+            .compactMap { $0 }
+            .map { Reactor.Action.foodName($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable().map { $0.food.itemImage }
+            .map { AddNameAndImageReactor.Action.addedImage($0) }
+            .bind(to: reactor.subReactors.addNameAndIamgeReactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindRemainDayReactor(reactor: AddItemReactor) {
+        remainDayView.reactor = reactor.subReactors.remainDayReactor
+        
+        remainDayView.nextBtn.rx.tap
+            .map { [weak self] _ in Int(self?.remainDayView.sliderView.value ?? 0.0) }
+            .map { Reactor.Action.remainDay($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        remainDayView.notSureBtn.rx.tap
+            .map { Reactor.Action.remainDay(10000) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+}

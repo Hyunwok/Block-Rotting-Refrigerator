@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RealmSwift
+
 extension UIView {
     func addSubviews(_ views: [UIView]) {
         for view in views {
@@ -15,13 +17,11 @@ extension UIView {
     }
 }
 
-protocol Reusable: AnyObject {
-    static var reuseIdentifier: String { get }
-}
-
-extension Reusable {
-    static var reuseIdentifier: String {
-        return String(describing: self)
+extension UIStackView {
+    func addArrangedSubviews(_ views: [UIView]) {
+        for view in views {
+            addArrangedSubview(view)
+        }
     }
 }
 
@@ -29,6 +29,16 @@ extension UITableView {
     func registerClassCell<T: UITableViewCell>(_ cellType: T.Type) {
         let identifier = "\(cellType)"
         register(cellType, forCellReuseIdentifier: identifier)
+    }
+    
+    
+    func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath, with cellType: T.Type = T.self) -> T {
+        let identifier = "\(cellType)"
+        guard let cell = dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? T else {
+            fatalError("Failed to dequeue a view with identifier \(identifier) matching type \(cellType.self).")
+        }
+        
+        return cell
     }
 }
 
@@ -61,4 +71,45 @@ extension UICollectionView {
     }
 }
 
+extension UIView {
+    convenience init(backgroundColor: UIColor) {
+        self.init(frame: .zero)
+        self.backgroundColor = backgroundColor
+    }
+}
 
+extension UIViewController {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+}
+extension Array {
+    subscript (safe index: Int) -> Element? {
+        return indices ~= index ? self[index] : nil
+    }
+}
+
+extension Results {
+    func toArray() -> [Element] {
+        return compactMap {
+            $0
+        }
+    }
+}
+
+extension UIApplication {
+    
+    var keyWindow: UIWindow? {
+        // Get connected scenes
+        return UIApplication.shared.connectedScenes
+            // Keep only active scenes, onscreen and visible to the user
+            .filter { $0.activationState == .foregroundActive }
+            // Keep only the first `UIWindowScene`
+            .first(where: { $0 is UIWindowScene })
+            // Get its associated windows
+            .flatMap({ $0 as? UIWindowScene })?.windows
+            // Finally, keep only the key window
+            .first(where: \.isKeyWindow)
+    }
+    
+}

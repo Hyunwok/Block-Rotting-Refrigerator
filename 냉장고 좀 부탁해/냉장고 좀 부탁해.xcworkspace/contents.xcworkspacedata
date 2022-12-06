@@ -2,12 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:냉장고 좀 부탁해.xcodeproj">
+      location = "group:&#x1102;&#x1162;&#x11bc;&#x110c;&#x1161;&#x11bc;&#x1100;&#x1169; &#x110c;&#x1169;&#x11b7; &#x1107;&#x116e;&#x1110;&#x1161;&#x11a8;&#x1112;&#x1162;.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:냉장고 좀 부탁해.xcodeproj">
    </FileRef>
 </Workspace>

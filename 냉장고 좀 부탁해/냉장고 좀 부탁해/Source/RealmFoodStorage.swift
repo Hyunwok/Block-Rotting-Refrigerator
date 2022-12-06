@@ -10,78 +10,103 @@ import Foundation
 import Realm
 import RealmSwift
 
-final class RealmFoodStorage {
+final class RealmFoodItemStorage: FoodItemStorage {
     var realm: Realm?
     
     init() {
         do {
             realm = try Realm(configuration: .defaultConfiguration)
-            //            realm.
         } catch {
             print(error.localizedDescription)
             //          logger.error("Realm Initialization Error: \(error)")
         }
     }
     
-    func fetch<T: RealmFetchable& ConvertibleToModel>() -> [T] {
+    func saveItem(_ item: FoodItem, _ completion: (Bool) ->()) {
+        guard let `realm` = realm else { return completion(false) }
+        
+        do {
+            try realm.write {
+                realm.add(item.toRealmObject())
+            }
+            return completion(true)
+        } catch {
+            return completion(false)
+        }
+    }
+    
+    func updateItem(_ item: FoodItem, _ completion: (Bool) -> ()) {
+        guard let `realm` = realm else { return completion(false) }
+        
+        if let objectToModify = realm.objects(FoodItemDTO.self).filter(NSPredicate(format: "id = %@", item.id)).first {
+            do {
+                try realm.write {
+                    ImageSaver.deleteImageFromDocumentDirectory(imageName: objectToModify.itemImageName)
+                    objectToModify.number = item.number
+                    objectToModify.itemImageName = ImageSaver.saveImageToDocumentDirectory(imageName: UUID().uuidString, image: item.itemImage)
+                }
+                return completion(true)
+            } catch {
+                return completion(false)
+            }
+        }
+    }
+    
+    func fetchItems() -> [FoodItem] {
         guard let `realm` = realm else { return [] }
-        let foods = realm.objects(T.self)
-        return foods.toArray()
+        let foodDTOs = realm.objects(FoodItemDTO.self).toArray()
+        let foods = foodDTOs.map { $0.toModel() }
+        return foods
     }
     
-    func save<T>(_ item: T, _ completion: (Bool) -> Void) where T : RealmSwiftObject {
-        guard let `realm` = realm else { return completion(false) }
-        do {
-            try realm.write {
-                realm.add(item)
-            }
-            completion(true)
-        } catch {
-            completion(false)
-        }
-    }
-    
-    func update<T>(_ item: T, _ completion: (Bool) -> Void) where T : RealmSwiftObject {
+    func deleteItem(_ item: FoodItem, _ completion: (Bool)->()) {
         guard let `realm` = realm else { return completion(false) }
         
-        do {
-            try realm.write {
-                realm.add(item, update: .modified)
-            }
-            completion(true)
-        } catch {
-            completion(false)
-        }
-    }
-    
-    func delete(_ item: FoodSectionDTO, _ completion: (Bool) -> Void) {
-        guard let `realm` = realm else { return completion(false) }
-        
-        if let objectToRemove = realm.objects(FoodSectionDTO.self).filter(NSPredicate(format: "id = %@", item.id)).first {
+        if let objectToRemove = realm.objects(FoodItemDTO.self).filter(NSPredicate(format: "id = %@", item.id)).first {
             do {
                 try realm.write {
                     realm.delete(objectToRemove)
+                    ImageSaver.deleteImageFromDocumentDirectory(imageName: objectToRemove.itemImageName)
                 }
                 completion(true)
             } catch {
                 completion(false)
             }
+        } else {
+            completion(false)
         }
-        completion(false)
     }
     
-    @discardableResult
-    func deleteAll() -> Bool {
-        guard let `realm` = realm else { return false }
-        do {
-            try realm.write {
-                realm.deleteAll()
+    func deleteAllItems() {
+        guard let `realm` = realm else { return }
+        
+        let foodDTOs = realm.objects(FoodItemDTO.self)
+        for foodDTO in foodDTOs {
+            do {
+                try realm.write {
+                    realm.delete(foodDTO)
+                }
+            } catch {
+                
             }
-            return true
-        } catch {
-            return false
+        }
+    }
+    
+    func updateAllItems() {
+        let calendar = Calendar.current
+        let date1 = calendar.startOfDay(for: Date())
+        let date2 = calendar.startOfDay(for: UserDefaultStorage.shared.lastStartDate)
+        let components = abs(calendar.dateComponents([.day], from: date1, to: date2).day ?? 0)
+        
+        if components > 0, let `realm` = realm {
+            let foodItemDTOs = realm.objects(FoodItemDTO.self).toArray()
+            for foodItemDTO in foodItemDTOs {
+                try! realm.write {
+                    foodItemDTO.remainingDay -= components
+                }
+            }
+            
+            UserDefaultStorage.shared.lastStartDate = Date()
         }
     }
 }
-
-extension RealmFoodStorage: FoodsRepository { }

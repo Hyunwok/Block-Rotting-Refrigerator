@@ -3,4 +3,38 @@
    uuid = "CD832006-8B5E-4582-8B9E-C809B1C58BF0"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E538CD52-A3BF-4D73-86D7-7F4861E94098"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "&#x1102;&#x1162;&#x11bc;&#x110c;&#x1161;&#x11bc;&#x1100;&#x1169; &#x110c;&#x1169;&#x11b7; &#x1107;&#x116e;&#x1110;&#x1161;&#x11a8;&#x1112;&#x1162;/Source/Presentation/Refriger/RefrigeratorReactor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "mutate(action:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A87B87AD-BA0B-4EAF-B1BC-3A5073047266"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "&#x1102;&#x1162;&#x11bc;&#x110c;&#x1161;&#x11bc;&#x1100;&#x1169; &#x110c;&#x1169;&#x11b7; &#x1107;&#x116e;&#x1110;&#x1161;&#x11a8;&#x1112;&#x1162;/Source/Presentation/Util/NotiCenter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "addNoti(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

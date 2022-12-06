@@ -20,7 +20,8 @@ final class AppDIContainer {
             [
                 AppAssembly(),
                 TabAssembly(),
-                RefrigerAssembly()
+                RefrigerAssembly(),
+                RecipeAssembly()
             ],
             container: container)
     }

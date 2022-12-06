@@ -11,7 +11,7 @@ import RxSwift
 
 protocol RefrigeratorCoordinatorProtocol: Coordinator {
     func addItem()
-    func selectedItem(_ item: FoodSection)
+    func selectedItem(_ item: FoodItem)
     func addAlert(_ alert: UIAlertController)
     func show<Action: AlertActionType>(
         title: String?,
@@ -41,7 +41,7 @@ final class RefrigeratorCoordinator: RefrigeratorCoordinatorProtocol {
         coordinator.start()
     }
     
-    func selectedItem(_ item: FoodSection) {
+    func selectedItem(_ item: FoodItem) {
         let coordinator: EditCoordinatorBase = AppDIContainer.shared.resolve()
         coordinator.food = item
         self.childCoordinator.append(coordinator)

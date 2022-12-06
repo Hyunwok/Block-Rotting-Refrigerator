@@ -9,9 +9,10 @@ import UIKit
 
 // https://velog.io/@hope1053/iOS-Realm-4-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
 class ImageSaver {
-    static func saveImageToDocumentDirectory(imageName: String, image: UIImage) {
+    static func saveImageToDocumentDirectory(imageName: String, image: UIImage?) -> String? {
+        guard let image = image else { return nil }
         // 1. 이미지를 저장할 경로를 설정해줘야함 - 도큐먼트 폴더,File 관련된건 Filemanager가 관리함(싱글톤 패턴)
-        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         
         // 2. 이미지 파일 이름 & 최종 경로 설정
         let imageURL = documentDirectory.appendingPathComponent(imageName)
@@ -20,7 +21,7 @@ class ImageSaver {
         // 압축할거면 jpegData로~(0~1 사이 값)
         guard let data = image.pngData() else {
             print("압축이 실패했습니다.")
-            return
+            return nil
         }
         
         // 4. 이미지 저장: 동일한 경로에 이미지를 저장하게 될 경우, 덮어쓰기하는 경우
@@ -43,11 +44,10 @@ class ImageSaver {
         } catch {
             print("이미지를 저장하지 못했습니다.")
         }
+        return imageName
     }
     
-    static func loadImageFromDocumentDirectory(imageName: String?) -> UIImage {
-        let defaultImage = UIImage(systemName: "pencil")!
-        
+    static func loadImageFromDocumentDirectory(imageName: String?) -> UIImage? {
         // 1. 도큐먼트 폴더 경로가져오기
         let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
         let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
@@ -57,14 +57,14 @@ class ImageSaver {
             // 2. 이미지 URL 찾기
             let imageURL = URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName)
             // 3. UIImage로 불러오기
-            return UIImage(contentsOfFile: imageURL.path) ?? defaultImage
+            return UIImage(contentsOfFile: imageURL.path)
         }
-        
-        return defaultImage
+        return nil
     }
     
-    static func deleteImageFromDocumentDirectory(imageName: String) {
-        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
+    static func deleteImageFromDocumentDirectory(imageName: String?) {
+        guard let imageName = imageName,
+              let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
         
         let imageURL = documentDirectory.appendingPathComponent(imageName)
         

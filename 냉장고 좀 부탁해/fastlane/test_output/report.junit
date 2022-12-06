@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='Blocking-Rotting-Test.xctest' tests='16' failures='0'>
+  <testsuite name='Blocking_Rotting_Test.Blocking_Rotting_Test' tests='14' failures='0'>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_검색결과없을때' time='0.016'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_검색결과있을때' time='0.020'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_빈서칭검사' time='0.014'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_알람체크_coldTem' time='0.014'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_알람체크_Frozen' time='0.016'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_알람체크_roomTem' time='0.012'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_알람체크_많은날짜' time='0.011'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_알람체크_적은날짜' time='0.015'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_알람체크_취소_isOrder가없을때' time='0.015'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_알람체크_취소_isOrder가있을때' time='0.012'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_초성검사' time='0.013'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_패치갯수가_0일때' time='0.018'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_패치를_잘_받아오는지' time='0.012'/>
+    <testcase classname='Blocking_Rotting_Test.Blocking_Rotting_Test' name='test_패치후_순서를_잘받아오는지' time='0.011'/>
+  </testsuite>
+  <testsuite name='Blocking_Rotting_Test.Recipe_Test' tests='2' failures='0'>
+    <testcase classname='Blocking_Rotting_Test.Recipe_Test' name='test_통신을_잘_받아오는지' time='0.007'/>
+    <testcase classname='Blocking_Rotting_Test.Recipe_Test' name='test_통신이_잘_실패하는지' time='0.003'/>
+  </testsuite>
+</testsuites>

@@ -50,7 +50,9 @@ final class AddItemCoordinator: NSObject, AddItemCoordinatorProtocol {
     func imagePicker() {
         let vc: PHPickerViewController = AppDIContainer.shared.resolve(registrationName: "OneImage")
         vc.delegate = self
-        nav.presentedViewController?.present(vc, animated: true)
+        vc.modalPresentationStyle = .fullScreen
+        nav.navigationBar.tintColor = .black
+        nav.presentedViewController?.present(vc, animated: true, completion: nil)
     }
     
     func pop() {

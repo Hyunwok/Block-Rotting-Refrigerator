@@ -10,6 +10,8 @@ import Foundation
 import RealmSwift
 
 final class FoodItemDTO: Object {
+    @objc dynamic var foodType: Int = 0
+    @objc dynamic var id: String = ""
     @objc dynamic var name: String = ""
     @objc dynamic var remainingDay: Int = 0
     @objc dynamic var number: Int = 0
@@ -18,20 +20,35 @@ final class FoodItemDTO: Object {
     
     var itemEnum: ItemPlace {
         get {
-            return ItemPlace(rawValue: itemPlace) ?? .coldTem
+            return ItemPlace(rawValue: itemPlace) ?? .roomTem
         }
         set {
             itemPlace = newValue.rawValue
         }
     }
+    
+    var tabTypeEnum: FoodType {
+        get {
+            return FoodType(rawValue: foodType)!
+        }
+        set {
+            foodType = newValue.rawValue
+        }
+    }
+    
+    override class func primaryKey() -> String? {
+        return "id"
+    }
 }
 
 extension FoodItemDTO: ConvertibleToModel {
     func toModel() -> FoodItem {
-        return FoodItem(name: name,
-                        remainingDay: remainingDay,
-                        number: number,
-                        itemImage: ImageSaver.loadImageFromDocumentDirectory(imageName: itemImageName),
-                        itemPlace: itemEnum)
+        return FoodItem(id: id,
+                 name: name,
+                 remainingDay: remainingDay,
+                 number: number,
+                 itemImage: ImageSaver.loadImageFromDocumentDirectory(imageName: itemImageName),
+                 itemPlace: itemEnum,
+                 foodType: FoodType(rawValue: foodType) ?? .cereals)
     }
 }

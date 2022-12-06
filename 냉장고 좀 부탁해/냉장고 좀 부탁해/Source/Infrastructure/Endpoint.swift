@@ -7,6 +7,69 @@
 
 import Foundation
 
+public protocol Requestable {
+    var path: String { get }
+    var isFullPath: Bool { get }
+    var method: HTTPMethodType { get }
+    var headerParameters: [String: String] { get }
+    var queryParametersEncodable: Encodable? { get }
+    var queryParameters: [String: Any] { get }
+    var bodyParametersEncodable: Encodable? { get }
+    var bodyParameters: [String: Any] { get }
+    var bodyEncoding: BodyEncoding { get }
+    var sampleData: Data? { get }
+    
+    func urlRequest(with networkConfig: NetworkConfigurable) throws -> URLRequest
+}
+
+public protocol Responsable {
+    associatedtype Response
+}
+
+public protocol ResponseRequestable: Requestable, Responsable {
+    var responseDecoder: ResponseDecoder { get }
+}
+
+public class Endpoint<R>: ResponseRequestable {
+    public typealias Response = R
+    
+    public let path: String
+    public let isFullPath: Bool
+    public let method: HTTPMethodType
+    public let headerParameters: [String: String]
+    public let queryParametersEncodable: Encodable?
+    public let queryParameters: [String: Any]
+    public let bodyParametersEncodable: Encodable?
+    public let bodyParameters: [String: Any]
+    public let bodyEncoding: BodyEncoding
+    public let responseDecoder: ResponseDecoder
+    public let sampleData: Data?
+    
+    init(path: String,
+         isFullPath: Bool = false,
+         method: HTTPMethodType,
+         headerParameters: [String: String] = [:],
+         queryParametersEncodable: Encodable? = nil,
+         queryParameters: [String: Any] = [:],
+         bodyParametersEncodable: Encodable? = nil,
+         bodyParameters: [String: Any] = [:],
+         bodyEncoding: BodyEncoding = .jsonSerializationData,
+         responseDecoder: ResponseDecoder = JSONResponseDecoder(),
+         sampleData: Data? = nil) {
+        self.path = path
+        self.isFullPath = isFullPath
+        self.method = method
+        self.headerParameters = headerParameters
+        self.queryParametersEncodable = queryParametersEncodable
+        self.queryParameters = queryParameters
+        self.bodyParametersEncodable = bodyParametersEncodable
+        self.bodyParameters = bodyParameters
+        self.bodyEncoding = bodyEncoding
+        self.responseDecoder = responseDecoder
+        self.sampleData = sampleData
+    }
+}
+
 public enum HTTPMethodType: String {
     case get     = "GET"
     case head    = "HEAD"
@@ -23,64 +86,6 @@ public enum BodyEncoding {
 
 enum RequestGenerationError: Error {
     case components
-}
-
-public protocol Requestable {
-    var path: String { get }
-    var isFullPath: Bool { get }
-    var method: HTTPMethodType { get }
-    var headerParameters: [String: String] { get }
-    var queryParametersEncodable: Encodable? { get }
-    var queryParameters: [String: Any] { get }
-    var bodyParametersEncodable: Encodable? { get }
-    var bodyParameters: [String: Any] { get }
-    var bodyEncoding: BodyEncoding { get }
-    
-    func urlRequest(with networkConfig: NetworkConfigurable) throws -> URLRequest
-}
-
-public protocol ResponseRequestable: Requestable {
-    associatedtype Response
-    
-    var responseDecoder: ResponseDecoder { get }
-}
-
-public class Endpoint<R>: ResponseRequestable {
-    
-    public typealias Response = R
-    
-    public let path: String
-    public let isFullPath: Bool
-    public let method: HTTPMethodType
-    public let headerParameters: [String: String]
-    public let queryParametersEncodable: Encodable?
-    public let queryParameters: [String: Any]
-    public let bodyParametersEncodable: Encodable?
-    public let bodyParameters: [String: Any]
-    public let bodyEncoding: BodyEncoding
-    public let responseDecoder: ResponseDecoder
-    
-    init(path: String,
-         isFullPath: Bool = false,
-         method: HTTPMethodType,
-         headerParameters: [String: String] = [:],
-         queryParametersEncodable: Encodable? = nil,
-         queryParameters: [String: Any] = [:],
-         bodyParametersEncodable: Encodable? = nil,
-         bodyParameters: [String: Any] = [:],
-         bodyEncoding: BodyEncoding = .jsonSerializationData,
-         responseDecoder: ResponseDecoder = JSONResponseDecoder()) {
-        self.path = path
-        self.isFullPath = isFullPath
-        self.method = method
-        self.headerParameters = headerParameters
-        self.queryParametersEncodable = queryParametersEncodable
-        self.queryParameters = queryParameters
-        self.bodyParametersEncodable = bodyParametersEncodable
-        self.bodyParameters = bodyParameters
-        self.bodyEncoding = bodyEncoding
-        self.responseDecoder = responseDecoder
-    }
 }
 
 extension Requestable {
